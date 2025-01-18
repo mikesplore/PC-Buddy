@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "475857917612",
+    "project_id": "vendorbymike",
+    "storage_bucket": "vendorbymike.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:475857917612:android:180c5b3822aac58cfa7109",
+        "android_client_info": {
+          "package_name": "com.mike.vendor"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjWWQJ2xoo3prxOS29Wig6f1upAo8Viv0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
