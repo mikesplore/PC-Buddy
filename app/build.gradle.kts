@@ -3,6 +3,9 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.gms.google.services)
+    id("com.google.devtools.ksp")
+    id("com.google.dagger.hilt.android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -49,10 +52,30 @@ android {
     buildFeatures {
         compose = true
     }
+
+
 }
 
-dependencies {
 
+dependencies {
+    implementation("androidx.compose.material:material-icons-extended-android:1.7.6")
+
+    //Room and Hilt dependencies
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.hilt.android)
+    ksp("androidx.room:room-compiler:2.6.1")
+    implementation(libs.androidx.hilt.navigation.compose)
+    ksp(libs.hilt.compiler)
+
+    //coil dependency
+    implementation(libs.coil.compose)
+
+    //kotlin flow
+    implementation(libs.kotlinx.coroutines.core)
+
+    //gson dependency
+    implementation(libs.gson)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -71,3 +94,4 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }
+
