@@ -24,6 +24,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.PeopleOutline
 import androidx.compose.material.icons.filled.Person
@@ -306,7 +307,16 @@ fun UserScreen() {
                     }
                 } else {
                     items(users.size) { index ->
-                        UserItem(user = users[index])
+                        AnimatedVisibility(true, enter = fadeIn() + expandVertically(), exit = fadeOut() + shrinkVertically()) {
+                            UserItem(user = users[index]){
+                                viewModel.deleteUserById(it.id, onSuccess = {
+                                    Toast.makeText(context, "User deleted successfully", Toast.LENGTH_SHORT).show()
+                                }, onError = { error ->
+                                    Toast.makeText(context, "Error: $error", Toast.LENGTH_LONG).show()
+                                })
+                            }
+                        }
+
                     }
                 }
             }
@@ -315,7 +325,10 @@ fun UserScreen() {
 }
 
 @Composable
-fun UserItem(user: User) {
+fun UserItem(
+    user: User,
+    onDeleteClick: (User) -> Unit  // Add callback for delete action
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -365,24 +378,39 @@ fun UserItem(user: User) {
                 )
             }
 
-
-            Button(
-                onClick = { },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = when (user.userType) {
-                        UserType.CUSTOMER -> MaterialTheme.colorScheme.primary
-                        UserType.VENDOR -> MaterialTheme.colorScheme.secondary
-                    }.copy(alpha = 0.1f)
-                ),
+            Row(
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(start = 8.dp)
             ) {
-                Text(
-                    text = user.userType.name.lowercase().capitalize(Locale.ROOT),
-                    color = when (user.userType) {
-                        UserType.CUSTOMER -> MaterialTheme.colorScheme.primary
-                        UserType.VENDOR -> MaterialTheme.colorScheme.secondary
-                    }
-                )
+                Button(
+                    onClick = { },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = when (user.userType) {
+                            UserType.CUSTOMER -> MaterialTheme.colorScheme.primary
+                            UserType.VENDOR -> MaterialTheme.colorScheme.secondary
+                        }.copy(alpha = 0.1f)
+                    )
+                ) {
+                    Text(
+                        text = user.userType.name.lowercase().capitalize(Locale.ROOT),
+                        color = when (user.userType) {
+                            UserType.CUSTOMER -> MaterialTheme.colorScheme.primary
+                            UserType.VENDOR -> MaterialTheme.colorScheme.secondary
+                        }
+                    )
+                }
+
+                IconButton(
+                    onClick = { onDeleteClick(user) },
+                    modifier = Modifier.padding(start = 8.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = "Delete user",
+                        tint = MaterialTheme.colorScheme.error
+                    )
+                }
             }
         }
     }
