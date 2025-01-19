@@ -64,6 +64,7 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     implementation(libs.hilt.android)
+    implementation(libs.firebase.firestore)
     ksp("androidx.room:room-compiler:2.6.1")
     implementation(libs.androidx.hilt.navigation.compose)
     ksp(libs.hilt.compiler)
