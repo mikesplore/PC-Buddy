@@ -1,15 +1,17 @@
+package com.mike.vendor
+
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.mike.vendor.AvailableDevicesScreen
-import com.mike.vendor.NetworkDevice
-import com.mike.vendor.ui.theme.DeviceControlScreen
+import com.mike.vendor.model.NetworkDevice
 
 @Composable
 fun AppNavHost(
     discoveredDevices: List<NetworkDevice>,
     onSendCommand: (NetworkDevice, String) -> Unit,
+    deviceOnlineStatus: Map<String, Boolean>,
+    onRefresh:() -> Unit,
 ) {
     val navController = rememberNavController()
     val startDestination = "home"
@@ -17,9 +19,9 @@ fun AppNavHost(
         composable("home") {
             AvailableDevicesScreen(
                 discoveredDevices = discoveredDevices,
-                onControlClick = { device ->
-                    navController.navigate("device/${device.name}")
-                }
+                navController = navController,
+                deviceOnlineStatus = deviceOnlineStatus,
+                onRefresh = onRefresh
             )
         }
 
@@ -27,11 +29,11 @@ fun AppNavHost(
             val deviceName = backStackEntry.arguments?.getString("deviceName") ?: return@composable
             DeviceControlScreen(
                 deviceName = deviceName,
-                commands = listOf("shutdown", "restart", "sleep", "lock"),
                 onCommandClick = { command ->
                     val device = discoveredDevices.find { it.name == deviceName }
                     device?.let { onSendCommand(it, command) }
-                }
+                },
+                onlineStatus = deviceOnlineStatus[deviceName] ?: false
             )
         }
     }

@@ -6,20 +6,19 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.slideInVertically
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Computer
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -31,18 +30,21 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.mike.vendor.NetworkDevice
+import androidx.navigation.NavController
+import com.mike.vendor.model.NetworkDevice
 
 @Composable
 fun DeviceCard(
     device: NetworkDevice,
-    onControlClick: () -> Unit,
-    index: Int
+    onlineStatus: Boolean,
+    navController: NavController
 ) {
+    val context = LocalContext.current
     var isHovered by remember { mutableStateOf(false) }
 
     val animatedScale by animateFloatAsState(
@@ -58,21 +60,16 @@ fun DeviceCard(
         animationSpec = tween(200)
     )
 
-    val enterTransition = remember {
-        fadeIn(animationSpec = tween(500)) +
-                slideInVertically(
-                    animationSpec = spring(
-                        dampingRatio = Spring.DampingRatioMediumBouncy,
-                        stiffness = Spring.StiffnessLow
-                    )
-                )
-    }
-
     AnimatedVisibility(
         visible = true,
     ) {
         ElevatedCard(
             modifier = Modifier
+                .border(
+                    width = 1.dp,
+                    color = MaterialTheme.colorScheme.primary,
+                    shape = MaterialTheme.shapes.medium
+                )
                 .fillMaxWidth()
                 .scale(animatedScale),
             elevation = CardDefaults.elevatedCardElevation(
@@ -83,6 +80,8 @@ fun DeviceCard(
             ),
             onClick = {
                 isHovered = !isHovered
+                navController.navigate("device/${device.name}")
+
             }
         ) {
             Row(
@@ -111,27 +110,23 @@ fun DeviceCard(
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
-                        Text(
-                            text = "${device.host}:${device.port}",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
                     }
                 }
 
-                FilledTonalButton(
-                    onClick = onControlClick,
-                    colors = ButtonDefaults.filledTonalButtonColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer
-                    )
+                Box(
+                    modifier = Modifier
+                        .border(
+                            1.dp,
+                            color = if (onlineStatus) Color.Green else Color.Red,
+                            shape = RoundedCornerShape(10.dp)
+                        ),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        "Control",
-                        style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer
-                    )
+                    val status = if (onlineStatus) "Online" else "Offline"
+                    Text(status, modifier = Modifier.padding(5.dp))
                 }
             }
         }
     }
 }
+
