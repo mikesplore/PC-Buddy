@@ -69,6 +69,16 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     ksp(libs.hilt.compiler)
 
+    //ktor client
+    implementation("io.ktor:ktor-client-core:2.3.3")
+    implementation("io.ktor:ktor-client-cio:2.3.3")
+    implementation("io.ktor:ktor-client-android:2.3.3")
+    implementation("io.ktor:ktor-client-content-negotiation:2.3.3")
+    implementation("io.ktor:ktor-serialization-gson:2.3.3")
+
+    //navigation compose
+    implementation("androidx.navigation:navigation-compose:2.8.5")
+
     //coil dependency
     implementation(libs.coil.compose)
 
