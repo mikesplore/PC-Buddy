@@ -6,11 +6,12 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "network_devices")
 data class NetworkDevice(
-    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    @PrimaryKey val macAddress: String,
     val name: String,
     val host: String,
     val port: Int,
-    val serviceInfo: NsdServiceInfo
+    val serviceInfo: NsdServiceInfo,
+    val onlineStatus: Boolean
 ){
-    constructor(name: String, host: String, port: Int, serviceInfo: NsdServiceInfo) : this(0, name, host, port, serviceInfo)
+    constructor(macAddress: String, name: String, host: String, port: Int, onlineStatus: Boolean) : this(macAddress, name, host, port, NsdServiceInfo(), onlineStatus)
 }

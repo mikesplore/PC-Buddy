@@ -1,12 +1,20 @@
-package com.mike.vendor
+package com.mike.vendor.deviceControl
 
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,22 +37,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.mike.vendor.model.NetworkDevice
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun DeviceCard(
     device: NetworkDevice,
-    onlineStatus: Boolean,
-    navController: NavController
+    navController: NavController,
 ) {
-    val context = LocalContext.current
     var isHovered by remember { mutableStateOf(false) }
 
     val animatedScale by animateFloatAsState(
@@ -60,30 +68,27 @@ fun DeviceCard(
         animationSpec = tween(200)
     )
 
-    AnimatedVisibility(
-        visible = true,
-    ) {
-        ElevatedCard(
-            modifier = Modifier
-                .border(
-                    width = 1.dp,
-                    color = MaterialTheme.colorScheme.primary,
-                    shape = MaterialTheme.shapes.medium
-                )
-                .fillMaxWidth()
-                .scale(animatedScale),
-            elevation = CardDefaults.elevatedCardElevation(
-                defaultElevation = animatedElevation
-            ),
-            colors = CardDefaults.elevatedCardColors(
-                containerColor = MaterialTheme.colorScheme.surface,
-            ),
-            onClick = {
+    ElevatedCard(
+        modifier = Modifier
+            .border(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.primary,
+                shape = MaterialTheme.shapes.medium
+            )
+            .fillMaxWidth()
+            .scale(animatedScale)
+            .clickable {
                 isHovered = !isHovered
-                navController.navigate("device/${device.name}")
-
-            }
-        ) {
+                navController.navigate("device/${device.macAddress}")
+            },
+        elevation = CardDefaults.elevatedCardElevation(
+            defaultElevation = animatedElevation
+        ),
+        colors = CardDefaults.elevatedCardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+        )
+    ) {
+        Column {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -113,20 +118,37 @@ fun DeviceCard(
                     }
                 }
 
-                Box(
-                    modifier = Modifier
-                        .border(
-                            1.dp,
-                            color = if (onlineStatus) Color.Green else Color.Red,
-                            shape = RoundedCornerShape(10.dp)
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    val status = if (onlineStatus) "Online" else "Offline"
-                    Text(status, modifier = Modifier.padding(5.dp))
+                AnimatedContent(
+                    targetState = device.onlineStatus,
+                    transitionSpec = {
+                        (slideInHorizontally { width -> width } + fadeIn())
+                            .togetherWith(slideOutHorizontally { width -> -width } + fadeOut())
+                    },
+                    label = "StatusAnimation"
+                ) { status ->
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(10.dp))
+                            .background(
+                                color = if (status) Color.Green.copy(alpha = 0.2f)
+                                else Color.Red.copy(alpha = 0.2f)
+                            )
+                            .border(
+                                1.dp,
+                                color = if (status) Color.Green else Color.Red,
+                                shape = RoundedCornerShape(10.dp)
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = if (status) "Online" else "Offline",
+                            modifier = Modifier.padding(5.dp),
+                            color = if (status) Color.Green else Color.Red,
+                            textAlign = TextAlign.Center
+                        )
+                    }
                 }
             }
         }
     }
 }
-

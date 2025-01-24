@@ -16,7 +16,7 @@ data class Command(
     val color: Color,
     val description: String,
     val confirmationTitle: String,
-    val confirmationMessage: String
+    var confirmationMessage: String
 )
 
 val commands = listOf(

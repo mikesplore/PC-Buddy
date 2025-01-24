@@ -7,50 +7,53 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.HourglassEmpty
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.mike.vendor.model.NetworkDevice
+import com.mike.vendor.deviceControl.DeviceCard
+import com.mike.vendor.model.viewmodel.DeviceViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AvailableDevicesScreen(
-    discoveredDevices: List<NetworkDevice>,
-    deviceOnlineStatus: Map<String, Boolean>,
     navController: NavController,
-    onRefresh: () -> Unit
 ) {
+    val deviceViewModel: DeviceViewModel = hiltViewModel()
+    val availableDevices by deviceViewModel.devices.collectAsState(emptyList())
+
+    LaunchedEffect(Unit) {
+        deviceViewModel.getAllDevices()
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
                     Text(
-                        "PC Controller",
+                        "Device Manager",
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.ExtraBold
                     )
-                },
-                actions = {
-                    IconButton(onClick = onRefresh) {
-                        Icon(
-                            Icons.Default.Refresh,
-                            contentDescription = "Refresh"
-                        )
-                    }
                 },
                 colors = TopAppBarDefaults.largeTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.background,
@@ -81,16 +84,47 @@ fun AvailableDevicesScreen(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                itemsIndexed(discoveredDevices, key = { _, device -> device.host ?: device.name }) { _, device ->
-                    val isOnline = deviceOnlineStatus[device.name] == true
+
+                if (availableDevices.isEmpty()) {
+                    item {
+                        NoDevicesFound()
+                    }
+                }
+
+                itemsIndexed(
+                    availableDevices,
+                    key = { _, device -> device.macAddress }) { _, device ->
                     DeviceCard(
                         device = device,
                         navController = navController,
-                        onlineStatus = isOnline
                     )
                 }
             }
-
         }
+    }
+}
+
+@Composable
+fun NoDevicesFound() {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Icon(
+            imageVector = Icons.Default.HourglassEmpty,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.size(64.dp)
+        )
+        Text(
+            "No devices found",
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier.padding(vertical = 16.dp)
+        )
+        Text("New devices will appear here once discovered",
+            color = Color.Gray,
+            style = MaterialTheme.typography.bodyMedium)
     }
 }
