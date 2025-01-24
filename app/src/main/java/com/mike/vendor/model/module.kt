@@ -7,9 +7,6 @@ import com.mike.vendor.model.dao.AppDao
 import com.mike.vendor.model.dao.DeviceDao
 import com.mike.vendor.model.repositories.AppRepository
 import com.mike.vendor.model.repositories.DeviceRepository
-import com.mike.vendor.networkManager.AppManager
-import com.mike.vendor.networkManager.DeviceCommunicator
-import com.mike.vendor.networkManager.NetworkManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -49,23 +46,6 @@ object AppModule {
         return context.getSystemService(Context.NSD_SERVICE) as NsdManager
     }
 
-    @Provides
-    @Singleton
-    fun provideNetworkManager(nsdManager: NsdManager): NetworkManager {
-        return NetworkManager(nsdManager)
-    }
-
-    @Provides
-    @Singleton
-    fun provideAppManager(): AppManager {
-        return AppManager()
-    }
-
-    @Provides
-    @Singleton
-    fun provideDeviceCommunicator(): DeviceCommunicator {
-        return DeviceCommunicator()
-    }
 
     @Provides
     @Singleton

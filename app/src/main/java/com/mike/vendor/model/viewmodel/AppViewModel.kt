@@ -2,37 +2,55 @@ package com.mike.vendor.model.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mike.vendor.model.AppEntity
-import com.mike.vendor.model.repositories.AppRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import com.mike.vendor.model.dataClasses.*
+import com.mike.vendor.model.DatabaseOperations
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class AppViewModel @Inject constructor(private val appRepository: AppRepository) : ViewModel() {
-    private val _apps = MutableStateFlow<List<AppEntity>>(emptyList())
-    val apps = _apps.asStateFlow()
+class AppViewModel(private val databaseOperations: DatabaseOperations) : ViewModel() {
 
-    fun insertApp(app: AppEntity) {
-        viewModelScope.launch(Dispatchers.IO) {
-            appRepository.insertApp(app)
+    fun performDatabaseOperations(
+        operatingSystemInfo: OperatingSystemInfo,
+        hardwareInfo: HardwareInfo,
+        batteryDetails: BatteryDetails,
+        processorDetails: ProcessorDetails,
+        memoryDetails: MemoryDetails,
+        displayInfo: DisplayInfo,
+        softwareInfo: SoftwareInfo,
+        jvmDetails: JvmDetails,
+        networkingInfo: NetworkingInfo,
+        networkInterfaceDetails: NetworkInterfaceDetails,
+        processInfo: ProcessInfo,
+        detailedProcessInfo: DetailedProcessInfo,
+        storageInfo: StorageInfo,
+        mountPointDetails: MountPointDetails,
+        userEnvironmentInfo: UserEnvironmentInfo,
+        installedApplication: InstalledApplication
+    ) {
+        viewModelScope.launch {
+            databaseOperations.saveDatabaseData(
+                operatingSystemInfo,
+                hardwareInfo,
+                batteryDetails,
+                processorDetails,
+                memoryDetails,
+                displayInfo,
+                softwareInfo,
+                jvmDetails,
+                networkingInfo,
+                networkInterfaceDetails,
+                processInfo,
+                detailedProcessInfo,
+                storageInfo,
+                mountPointDetails,
+                userEnvironmentInfo,
+                installedApplication
+            )
         }
     }
 
-    fun getApps() {
-        viewModelScope.launch(Dispatchers.IO) {
-            appRepository.getApps().collect {
-                _apps.value = it
-            }
-        }
-    }
-
-    fun clearApps() {
-        viewModelScope.launch(Dispatchers.IO) {
-            appRepository.clearApps()
+    fun retrieveDatabaseData() {
+        viewModelScope.launch {
+            databaseOperations.retrieveDatabaseData()
         }
     }
 }
