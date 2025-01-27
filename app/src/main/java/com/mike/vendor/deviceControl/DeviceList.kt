@@ -23,8 +23,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.mike.vendor.Command
-import com.mike.vendor.commands
+import com.mike.vendor.api.Command
+import com.mike.vendor.api.commands
+
 
 @Composable
 fun DeviceList(selectedCommand: Command?, onCommandClick: (String) -> Unit) {
