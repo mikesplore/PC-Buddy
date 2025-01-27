@@ -12,8 +12,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.HourglassEmpty
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -22,28 +24,30 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.mike.vendor.deviceControl.DeviceCard
-import com.mike.vendor.model.viewmodel.DeviceViewModel
+import com.mike.vendor.model.viewmodel.ServerViewModel
+import androidx.compose.runtime.getValue
+import androidx.navigation.NavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AvailableDevicesScreen(
-    navController: NavController,
+    navController: NavController
 ) {
-    val deviceViewModel: DeviceViewModel = hiltViewModel()
-    val availableDevices by deviceViewModel.devices.collectAsState(emptyList())
+    val serverViewModel: ServerViewModel = hiltViewModel()
+    val availableDevices by serverViewModel.servers.collectAsState()
 
     LaunchedEffect(Unit) {
-        deviceViewModel.getAllDevices()
+        serverViewModel.getAllServers()
     }
+
+
 
     Scaffold(
         topBar = {
@@ -94,10 +98,9 @@ fun AvailableDevicesScreen(
                 itemsIndexed(
                     availableDevices,
                     key = { _, device -> device.macAddress }) { _, device ->
-                    DeviceCard(
-                        device = device,
-                        navController = navController,
-                    )
+                    AnimatedVisibility(true, enter = fadeIn() + expandVertically()) {
+                        DeviceCard(device = device, navController = navController)
+                    }
                 }
             }
         }
@@ -123,8 +126,10 @@ fun NoDevicesFound() {
             color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.padding(vertical = 16.dp)
         )
-        Text("New devices will appear here once discovered",
+        Text(
+            "New devices will appear here once discovered",
             color = Color.Gray,
-            style = MaterialTheme.typography.bodyMedium)
+            style = MaterialTheme.typography.bodyMedium
+        )
     }
 }
