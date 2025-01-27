@@ -1,25 +1,34 @@
 package com.mike.vendor.model.repositories
 
-import com.mike.vendor.model.NetworkDevice
-import com.mike.vendor.model.dao.DeviceDao
+import android.util.Log
+import com.mike.vendor.model.Server
+import com.mike.vendor.model.dao.ServerDao
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class DeviceRepository(private val deviceDao: DeviceDao) {
+class ServerRepository @Inject constructor(private val serverDao: ServerDao) {
 
-     fun insertDevice(device: NetworkDevice) {
-        deviceDao.insertDevice(device)
+     fun insertServer(server: Server) {
+        serverDao.insertServer(server)
     }
 
-     fun getAllDevices(): Flow<List<NetworkDevice>> {
-        return deviceDao.getAllDevices()
+     fun getAllServers(): Flow<List<Server>> {
+        return serverDao.getAllServers()
     }
 
-    fun getDeviceOnlineStatus(macAddress: String): Flow<Boolean> {
-        return deviceDao.getDeviceOnlineStatus(macAddress)
+    fun updateServer(server: Server){
+        serverDao.updateServer(server)
     }
 
-    fun getDevice(macAddress: String): Flow<NetworkDevice> {
-        return deviceDao.getDevice(macAddress)
+    fun getServerOnlineStatus(macAddress: String): Flow<Boolean> {
+        return serverDao.getServerOnlineStatus(macAddress)
+    }
+
+    fun getServer(macAddress: String): Flow<Server> {
+        val server = serverDao.getServer(macAddress)
+        Log.d("ServerRepository", "Fetched server: $server")
+        return server
+
     }
 
 
