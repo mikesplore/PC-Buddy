@@ -1,5 +1,8 @@
 package com.mike.vendor.deviceControl
 
+import android.content.Context
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -16,42 +19,42 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.mike.vendor.Command
-import com.mike.vendor.model.NetworkDevice
-import com.mike.vendor.model.viewmodel.DeviceViewModel
+import com.mike.vendor.api.Command
+import com.mike.vendor.model.viewmodel.ServerViewModel
+import androidx.compose.runtime.setValue
+import com.mike.vendor.api.commands
+import com.mike.vendor.api.sendCommand
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DeviceControlScreen(
-    device: NetworkDevice,
-    onCommandClick: (String) -> Unit,
+fun ServerControlScreen(
+    macAddress: String,
+    context: Context,
     navController: NavController
 ) {
     var selectedCommand by remember { mutableStateOf<Command?>(null) }
-    val deviceName by remember { derivedStateOf { device.name } }
-    val onlineStatus by remember { derivedStateOf { device.onlineStatus } }
-    val deviceViewModel: DeviceViewModel = hiltViewModel()
-    val deviceOnlineStatus by deviceViewModel.deviceOnlineStatus.collectAsState()
+    val serverViewModel: ServerViewModel = hiltViewModel()
+    val server by serverViewModel.server.collectAsState()
+    val onlineStatus by serverViewModel.serverOnlineStatus.collectAsState()
 
-    LaunchedEffect(Unit) {
-        deviceViewModel.getDeviceOnlineStatus(device.macAddress)
+    LaunchedEffect(macAddress) {
+        serverViewModel.getServerOnlineStatus(macAddress)
+        serverViewModel.getServer(macAddress).also {
+            Log.d("ServerControlScreen", "Fetched server: ${it}")
+        }
     }
-
-
 
     Scaffold(
         topBar = {
-            TopAppBarComponent(deviceName, onlineStatus) {
-                // Handle back button click
+            TopAppBarComponent(server?.name ?: "Unknown Server", onlineStatus == true) {
+                navController.popBackStack()
             }
         }
     ) { innerPadding ->
@@ -61,17 +64,14 @@ fun DeviceControlScreen(
                 .fillMaxSize()
         ) {
             Text(
-                "Tap any button to send command to $deviceName",
+                "Tap any button to send command to ${server?.name ?: "Unknown Server"}",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
             )
 
-            //device List
-            DeviceList(selectedCommand, onCommandClick)
-            //View Apps Button
-            ViewAppsBox(device.macAddress) {
-                navController.navigate("apps/${device.macAddress}")
+            DeviceList(selectedCommand) { commandName ->
+                selectedCommand = commands.find { it.name == commandName }
             }
         }
 
@@ -80,12 +80,12 @@ fun DeviceControlScreen(
             AlertDialog(
                 onDismissRequest = { selectedCommand = null },
                 title = {
-                    Text(if (deviceOnlineStatus == false) "Device Offline" else command.confirmationTitle)
+                    Text(if (onlineStatus == false) "Server Offline" else command.confirmationTitle)
                 },
                 text = {
                     Text(
-                        if (deviceOnlineStatus == false)
-                            "$deviceName is currently offline. Please check the connection and try again."
+                        if (onlineStatus == false)
+                            "${server?.name ?: "The server"} is currently offline. Please check the connection and try again."
                         else
                             command.confirmationMessage
                     )
@@ -94,27 +94,27 @@ fun DeviceControlScreen(
                     Icon(
                         imageVector = command.icon,
                         contentDescription = null,
-                        tint = if (deviceOnlineStatus == false) MaterialTheme.colorScheme.error else command.color,
+                        tint = if (onlineStatus == false) MaterialTheme.colorScheme.error else command.color,
                         modifier = Modifier.size(24.dp)
                     )
                 },
                 confirmButton = {
                     Button(
                         onClick = {
-                            if (deviceOnlineStatus == true) {
-                                onCommandClick(command.name)
+                            if (onlineStatus == true) {
+                                sendCommand(command.name, context, server?.host ?: "", server?.port ?: 0)
                             }
                             selectedCommand = null
                         },
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = if (!onlineStatus) MaterialTheme.colorScheme.error else command.color
+                            containerColor = if (onlineStatus == false) MaterialTheme.colorScheme.error else command.color
                         )
                     ) {
-                        Text(if (deviceOnlineStatus == false) "OK" else "Confirm")
+                        Text(if (onlineStatus == false) "OK" else "Confirm")
                     }
                 },
                 dismissButton = {
-                    if (deviceOnlineStatus == true) {
+                    if (onlineStatus == true) {
                         TextButton(
                             onClick = { selectedCommand = null }
                         ) {
@@ -126,16 +126,3 @@ fun DeviceControlScreen(
         }
     }
 }
-
-@Composable
-fun ViewAppsBox(macAddress: String, onButtonClick: (String) -> Unit) {
-    Button(
-        onClick = { onButtonClick(macAddress) },
-        colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer
-        )
-    ) {
-        Text("View Apps")
-    }
-}
-
