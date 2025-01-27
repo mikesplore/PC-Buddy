@@ -4,64 +4,71 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.mike.vendor.model.NetworkDevice
+import com.mike.vendor.model.Server
 import kotlinx.coroutines.flow.Flow
 
 /**
- * Data Access Object (DAO) for accessing and managing `NetworkDevice` entities in the database.
+ * Data Access Object (DAO) for accessing and managing `Server` entities in the database.
  */
 @Dao
-interface DeviceDao {
+interface ServerDao {
 
     /**
-     * Inserts a `NetworkDevice` into the database.
-     * If the device already exists, it will be replaced.
+     * Inserts a `Server` into the database.
+     * If the server already exists, it will be replaced.
      *
-     * @param device The `NetworkDevice` to be inserted.
+     * @param server The `Server` to be inserted.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertDevice(device: NetworkDevice)
+    fun insertServer(server: Server)
 
     /**
-     * Retrieves all `NetworkDevice` entities from the database.
+     * Retrieves all `Server` entities from the database.
      *
-     * @return A `Flow` emitting a list of all `NetworkDevice` entities.
+     * @return A `Flow` emitting a list of all `Server` entities.
      */
-    @Query("SELECT * FROM network_devices")
-    fun getAllDevices(): Flow<List<NetworkDevice>>
+    @Query("SELECT * FROM servers")
+    fun getAllServers(): Flow<List<Server>>
 
     /**
-     * Updates the online status of a `NetworkDevice` identified by its MAC address.
+     * Updates the online status of a `Server` identified by its MAC address.
      *
-     * @param macAddress The MAC address of the device to update.
-     * @param isOnline The new online status of the device.
+     * @param macAddress The MAC address of the server to update.
+     * @param isOnline The new online status of the server.
      */
-    @Query("UPDATE network_devices SET onlineStatus = :isOnline WHERE macAddress = :macAddress")
-    suspend fun updateDeviceOnlineStatus(macAddress: String, isOnline: Boolean)
+    @Query("UPDATE servers SET onlineStatus = :isOnline WHERE macAddress = :macAddress")
+     fun updateServerOnlineStatus(macAddress: String, isOnline: Boolean)
 
     /**
-     * Deletes all `NetworkDevice` entities from the database.
+     * Updates all the `Server` entities in the database.
+     * If a server does not exist, it will be inserted.
      */
-    @Query("DELETE FROM network_devices")
-    fun deleteAllDevices()
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+     fun updateServer(server: Server)
 
     /**
-     * Retrieves the online status of a `NetworkDevice` identified by its MAC address.
+     * Deletes all `Server` entities from the database.
+     */
+    @Query("DELETE FROM servers")
+    fun deleteAllServers()
+
+    /**
+     * Retrieves the online status of a `Server` identified by its MAC address.
      *
-     * @param macAddress The MAC address of the device.
-     * @return A `Flow` emitting the online status of the device.
+     * @param macAddress The MAC address of the server.
+     * @return A `Flow` emitting the online status of the server.
      */
-    @Query("SELECT onlineStatus FROM network_devices WHERE macAddress = :macAddress")
-    fun getDeviceOnlineStatus(macAddress: String): Flow<Boolean>
+    @Query("SELECT onlineStatus FROM servers WHERE macAddress = :macAddress")
+    fun getServerOnlineStatus(macAddress: String): Flow<Boolean>
 
     /**
-     * Retrieves a `NetworkDevice` entity identified by its MAC address.
+     * Retrieves a `Server` entity identified by its MAC address.
      *
-     * @param macAddress The MAC address of the device.
-     * @return A `Flow` emitting the `NetworkDevice` entity.
+     * @param macAddress The MAC address of the server.
+     * @return A `Flow` emitting the `Server` entity.
      */
-    @Query("SELECT * FROM network_devices WHERE macAddress = :macAddress")
-    fun getDevice(macAddress: String): Flow<NetworkDevice>
+    @Query("SELECT * FROM servers WHERE macAddress = :macAddress")
+    fun getServer(macAddress: String): Flow<Server>
 }
 
 
