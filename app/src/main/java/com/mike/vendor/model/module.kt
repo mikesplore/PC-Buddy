@@ -1,12 +1,8 @@
 package com.mike.vendor.model
 
 import android.content.Context
-import android.net.nsd.NsdManager
 import androidx.room.Room
-import com.mike.vendor.model.dao.AppDao
-import com.mike.vendor.model.dao.DeviceDao
-import com.mike.vendor.model.repositories.AppRepository
-import com.mike.vendor.model.repositories.DeviceRepository
+import com.mike.vendor.model.dao.ServerDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,38 +20,13 @@ object AppModule {
         return Room.databaseBuilder(
             context.applicationContext,
             AppDatabase::class.java,
-            "network_devices_db"
+            "servers_database"
         ).build()
     }
 
     @Provides
     @Singleton
-    fun provideDeviceDao(database: AppDatabase): DeviceDao {
-        return database.deviceDao()
-    }
-
-    @Provides
-    @Singleton
-    fun provideDeviceRepository(deviceDao: DeviceDao): DeviceRepository {
-        return DeviceRepository(deviceDao)
-    }
-
-    @Provides
-    @Singleton
-    fun provideNsdManager(@ApplicationContext context: Context): NsdManager {
-        return context.getSystemService(Context.NSD_SERVICE) as NsdManager
-    }
-
-
-    @Provides
-    @Singleton
-    fun provideAppRepository(appDao: AppDao): AppRepository {
-        return AppRepository(appDao)
-    }
-
-    @Provides
-    @Singleton
-    fun provideAppDao(database: AppDatabase): AppDao {
-        return database.appDao()
+    fun provideDeviceDao(database: AppDatabase): ServerDao {
+        return database.serverDao()
     }
 }
