@@ -12,7 +12,9 @@ data class MemoryDetails(
     val cacheSize: Long,
     val swapTotal: Long,
     val swapUsed: Long
-)
+){
+    constructor() : this("", 0, 0, 0, 0, 0, 0)
+}
 
 @Entity(tableName = "storage_info")
 data class StorageInfo(
@@ -21,10 +23,11 @@ data class StorageInfo(
     val totalSpace: Long,
     val usedSpace: Long,
     val freeSpace: Long
-)
+){
+    constructor() : this("", emptyList(), 0, 0, 0)
+}
 
 data class MountPointDetails(
-    @PrimaryKey val macAddress: String,
     val mountPoint: String,
     val type: String,
     val description: String,
