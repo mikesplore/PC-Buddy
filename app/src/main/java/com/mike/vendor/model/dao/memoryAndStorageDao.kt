@@ -21,5 +21,6 @@ interface MemoryAndStorageDao {
     @Query("SELECT * FROM storage_info WHERE macAddress = :macAddress")
     suspend fun getStorageInfo(macAddress: String): StorageInfo
 
+
 }
 
