@@ -1,12 +1,14 @@
 package com.mike.vendor.deviceControl
 
-import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,8 +17,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ChevronRight
 import androidx.compose.material.icons.rounded.Computer
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
@@ -30,14 +33,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.mike.vendor.model.Server
+import com.mike.vendor.ui.theme.CommonComponents as CC
 
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -49,21 +51,19 @@ fun DeviceCard(
     var isHovered by remember { mutableStateOf(false) }
     val status = device.onlineStatus
 
-    val borderColor: Color by animateColorAsState(
+    val statusColor by animateColorAsState(
         targetValue = if (status) Color.Green else Color.Red,
         animationSpec = tween(500)
     )
 
-    val textColor: Color by animateColorAsState(
-        targetValue = if (status) Color.Green else Color.Red,
-        animationSpec = tween(500)
+    val pulseAnimation by rememberInfiniteTransition().animateFloat(
+        initialValue = 0.1f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(1000),
+            repeatMode = RepeatMode.Reverse
+        )
     )
-
-    val backgroundColor: Color by animateColorAsState(
-        targetValue = if (status) Color.Green.copy(alpha = 0.2f) else Color.Red.copy(alpha = 0.2f),
-        animationSpec = tween(500)
-    )
-
 
     val animatedElevation by animateDpAsState(
         targetValue = if (isHovered) 8.dp else 2.dp,
@@ -72,74 +72,82 @@ fun DeviceCard(
 
     ElevatedCard(
         modifier = Modifier
-            .border(
-                width = 1.dp,
-                color = MaterialTheme.colorScheme.primary,
-                shape = MaterialTheme.shapes.medium
-            )
             .fillMaxWidth()
+            .padding(vertical = 8.dp)
             .clickable {
                 isHovered = !isHovered
                 navController.navigate("device/${device.macAddress}")
-                Log.d("DeviceCard", "Clicked on device: ${device.macAddress}")
             },
         elevation = CardDefaults.elevatedCardElevation(
             defaultElevation = animatedElevation
         ),
         colors = CardDefaults.elevatedCardColors(
-            containerColor = MaterialTheme.colorScheme.surface,
+            containerColor = CC.secondary(),
         )
     ) {
-        Column {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.weight(1f)
             ) {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                Box(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .background(
+                           CC.primary(),
+                            CircleShape
+                        ),
+                    contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         Icons.Rounded.Computer,
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(32.dp)
+                        tint = CC.textColor(),
+                        modifier = Modifier.size(24.dp)
                     )
-
-                    Column {
-                        Text(
-                            text = device.name,
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    }
                 }
 
-                Box(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(
-                            color = backgroundColor,
-                        )
-                        .border(
-                            1.dp,
-                            color = borderColor,
-                            shape = RoundedCornerShape(10.dp)
-                        ),
-                    contentAlignment = Alignment.Center
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     Text(
-                        text = if (status) "Online" else "Offline",
-                        modifier = Modifier.padding(5.dp),
-                        color = textColor,
-                        textAlign = TextAlign.Center
+                        text = device.name,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
+            }
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // Status indicator
+                Box(
+                    modifier = Modifier
+                        .size(12.dp)
+                        .background(
+                            color = statusColor.copy(alpha = if (status) pulseAnimation else 1f),
+                            shape = CircleShape
+                        )
+                )
+
+                // Optional chevron icon
+                Icon(
+                    Icons.Rounded.ChevronRight,
+                    contentDescription = "View details",
+                    tint = CC.textColor(),
+                    modifier = Modifier.size(20.dp)
+                )
             }
         }
     }
