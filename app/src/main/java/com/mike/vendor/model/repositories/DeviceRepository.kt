@@ -30,6 +30,4 @@ class ServerRepository @Inject constructor(private val serverDao: ServerDao) {
         return server
 
     }
-
-
 }
