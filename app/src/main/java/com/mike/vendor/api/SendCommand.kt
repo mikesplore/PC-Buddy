@@ -134,18 +134,19 @@ fun fetchStorageInfo(
     })
 }
 
+
 fun fetchDisplayInfo(
     ipAddress: String,
     port: Int,
-    onSuccess: (DisplayInfo) -> Unit,
+    onSuccess: (List<DisplayInfo>) -> Unit,
     onFailure: (String) -> Unit
 ) {
     val baseUrl = "http://$ipAddress:$port"
     val apiService = RetrofitClient.create(baseUrl)
-    val call: Call<DisplayInfo> = apiService.getDisplay()
+    val call: Call<List<DisplayInfo>> = apiService.getDisplay()
 
-    call.enqueue(object : Callback<DisplayInfo> {
-        override fun onResponse(call: Call<DisplayInfo>, response: Response<DisplayInfo>) {
+    call.enqueue(object : Callback<List<DisplayInfo>> {
+        override fun onResponse(call: Call<List<DisplayInfo>>, response: Response<List<DisplayInfo>>) {
             if (response.isSuccessful) {
                 Log.d("fetchDisplayInfo", "Response successful")
                 response.body()?.let { data ->
@@ -157,11 +158,11 @@ fun fetchDisplayInfo(
                 }
             } else {
                 Log.d("fetchDisplayInfo", "Failed to fetch display info: ${response.message()}")
-                onFailure("Failed to fetch storage info: ${response.message()}")
+                onFailure("Failed to fetch display info: ${response.message()}")
             }
         }
 
-        override fun onFailure(call: Call<DisplayInfo>, t: Throwable) {
+        override fun onFailure(call: Call<List<DisplayInfo>>, t: Throwable) {
             onFailure("Error: ${t.message}")
         }
     })
