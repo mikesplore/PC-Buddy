@@ -9,7 +9,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-// Modified fetchServers function
 fun fetchServers(
     serverDao: ServerDao,
     scope: CoroutineScope
@@ -19,31 +18,25 @@ fun fetchServers(
     scope.launch(Dispatchers.IO) {
         while (true) {
             try {
-                // Create a mutable set to store newly discovered servers
                 val discoveredServers = mutableSetOf<Server>()
 
                 // Discover servers
                 discoverServers().collect { server ->
-                    Log.d("ServerDiscovery", "New server discovered: ${server.macAddress}")
+                    Log.d("ServerDiscovery", "New server discovered: ${server.macAddress} with host ${server.host}")
                     discoveredServers.add(server)
                 }
 
                 if (discoveredServers.isEmpty()) {
-                    // No discovered servers, set all database servers to offline
                     setAllServersOffline(serverDao)
                 } else {
-                    // Update database servers' status based on discovered servers
-                    updateServerStatuses(serverDao, discoveredServers)
-
-                    // Insert any new servers that aren't in the database
+                    updateServerStatusesAndHosts(serverDao, discoveredServers)
                     insertNewServers(serverDao, discoveredServers)
                 }
             } catch (e: Exception) {
                 Log.e("ServerDiscovery", "Error collecting servers: ${e.message}")
             }
 
-            // Wait for a specified delay before the next check
-            delay(10000) // 60 seconds delay
+            delay(10000) // 10-second delay before the next check
         }
     }
 }
@@ -59,24 +52,36 @@ private suspend fun setAllServersOffline(serverDao: ServerDao) {
     }
 }
 
-private suspend fun updateServerStatuses(
+private suspend fun updateServerStatusesAndHosts(
     serverDao: ServerDao,
     discoveredServers: Set<Server>
 ) {
     val dbServers = serverDao.getAllServers().first()
+    val discoveredServerMap = discoveredServers.associateBy { it.macAddress }
 
-    // Create a set of discovered MAC addresses for efficient lookup
-    val discoveredMacs = discoveredServers.map { it.macAddress }.toSet()
-
-    // Update status for all database servers
     dbServers.forEach { dbServer ->
-        val shouldBeOnline = discoveredMacs.contains(dbServer.macAddress)
-        if (dbServer.onlineStatus != shouldBeOnline) {
-            val updatedServer = dbServer.copy(onlineStatus = shouldBeOnline)
+        val discoveredServer = discoveredServerMap[dbServer.macAddress]
+        if (discoveredServer != null) {
+            val shouldBeOnline = true
+            val hostChanged = dbServer.host != discoveredServer.host
+
+            if (dbServer.onlineStatus != shouldBeOnline || hostChanged) {
+                val updatedServer = dbServer.copy(
+                    onlineStatus = shouldBeOnline,
+                    host = discoveredServer.host
+                )
+                serverDao.updateServer(updatedServer)
+                Log.d(
+                    "ServerDiscovery",
+                    "Updated server ${dbServer.macAddress} status to online and host to ${discoveredServer.host}"
+                )
+            }
+        } else if (dbServer.onlineStatus) {
+            val updatedServer = dbServer.copy(onlineStatus = false)
             serverDao.updateServer(updatedServer)
             Log.d(
                 "ServerDiscovery",
-                "Updated server ${dbServer.macAddress} status to ${if (shouldBeOnline) "online" else "offline"}"
+                "Set server ${dbServer.macAddress} status to offline"
             )
         }
     }
@@ -89,11 +94,10 @@ private suspend fun insertNewServers(
     val dbServers = serverDao.getAllServers().first()
     val existingMacs = dbServers.map { it.macAddress }.toSet()
 
-    // Insert only servers that don't exist in database
     discoveredServers
         .filterNot { existingMacs.contains(it.macAddress) }
         .forEach { newServer ->
             serverDao.insertServer(newServer)
-            Log.d("ServerDiscovery", "Inserted new server: ${newServer.macAddress}")
+            Log.d("ServerDiscovery", "Inserted new server: ${newServer.macAddress} with host ${newServer.host}")
         }
 }
