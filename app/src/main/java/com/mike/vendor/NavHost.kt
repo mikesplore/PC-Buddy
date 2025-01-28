@@ -7,7 +7,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.mike.vendor.deviceControl.AvailableDevicesScreen
 import com.mike.vendor.deviceControl.ServerControlScreen
-import com.mike.vendor.specs.battery.BatteryDetailsScreen
+import com.mike.vendor.specs.BatteryDetailsScreen
+import com.mike.vendor.specs.MemoryAndStorageDetails
 
 @Composable
 fun AppNavHost(
@@ -30,6 +31,14 @@ fun AppNavHost(
 
         composable("battery/{macAddress}") { backStackEntry ->
             BatteryDetailsScreen(
+                macAddress = backStackEntry.arguments?.getString("macAddress") ?: "",
+                navController = navController,
+                context = context
+            )
+        }
+
+        composable("memoryAndStorage/{macAddress}") { backStackEntry ->
+            MemoryAndStorageDetails(
                 macAddress = backStackEntry.arguments?.getString("macAddress") ?: "",
                 navController = navController,
                 context = context
