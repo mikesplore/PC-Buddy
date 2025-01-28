@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import com.mike.vendor.model.dataClasses.BatteryDetails
+import com.mike.vendor.model.dataClasses.DisplayInfo
 import com.mike.vendor.model.dataClasses.MemoryDetails
 import com.mike.vendor.model.dataClasses.StorageInfo
 import retrofit2.Call
@@ -128,6 +129,39 @@ fun fetchStorageInfo(
         }
 
         override fun onFailure(call: Call<StorageInfo>, t: Throwable) {
+            onFailure("Error: ${t.message}")
+        }
+    })
+}
+
+fun fetchDisplayInfo(
+    ipAddress: String,
+    port: Int,
+    onSuccess: (DisplayInfo) -> Unit,
+    onFailure: (String) -> Unit
+) {
+    val baseUrl = "http://$ipAddress:$port"
+    val apiService = RetrofitClient.create(baseUrl)
+    val call: Call<DisplayInfo> = apiService.getDisplay()
+
+    call.enqueue(object : Callback<DisplayInfo> {
+        override fun onResponse(call: Call<DisplayInfo>, response: Response<DisplayInfo>) {
+            if (response.isSuccessful) {
+                Log.d("fetchDisplayInfo", "Response successful")
+                response.body()?.let { data ->
+                    onSuccess(data)
+                    Log.d("fetchDisplayInfo", "Data: $data")
+                } ?: run {
+                    onFailure("Failed to fetch display info: Empty response")
+                    Log.d("fetchDisplayInfo", "Empty response")
+                }
+            } else {
+                Log.d("fetchDisplayInfo", "Failed to fetch display info: ${response.message()}")
+                onFailure("Failed to fetch storage info: ${response.message()}")
+            }
+        }
+
+        override fun onFailure(call: Call<DisplayInfo>, t: Throwable) {
             onFailure("Error: ${t.message}")
         }
     })
