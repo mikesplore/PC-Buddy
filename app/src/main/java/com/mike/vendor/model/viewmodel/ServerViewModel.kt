@@ -51,7 +51,7 @@ class ServerViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.Main) { // Use Dispatchers.Main
             repository.getServer(macAddress).collect { server ->
                 _server.value = server
-                Log.d("ServerViewModel", "Server got: $server")
+                Log.d("ServerSearch", "Server got: $server")
             }
         }
     }
