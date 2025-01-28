@@ -7,6 +7,7 @@ import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.automirrored.filled.VolumeDown
 import androidx.compose.material.icons.automirrored.filled.VolumeMute
 import androidx.compose.material.icons.automirrored.filled.VolumeUp
+import androidx.compose.material.icons.filled.BatteryFull
 import androidx.compose.material.icons.filled.Bluetooth
 import androidx.compose.material.icons.filled.BluetoothDisabled
 import androidx.compose.material.icons.filled.BrightnessHigh
@@ -36,6 +37,7 @@ data class Command(
     val execute: (CommandApiService) -> Call<Void>
 )
 
+//General commands
 val commands = listOf(
     Command("Reboot", "Restart the device", Icons.Default.Refresh, Color(0xFF4CAF50), "Reboot Device",
         "Are you sure you want to restart this device? This will close all applications and restart the system.") { apiService ->
@@ -64,25 +66,3 @@ val commands = listOf(
 )
 
 
-fun sendCommand(commandName: String, context: Context, ipAddress: String, port: Int) {
-    val command = commands.find { it.name == commandName } ?: return
-    val baseUrl = "http://$ipAddress:$port"
-    val apiService = RetrofitClient.create(baseUrl)
-    val call: Call<Void> = command.execute(apiService)
-
-    call.enqueue(object : Callback<Void> {
-        override fun onResponse(call: Call<Void>, response: Response<Void>) {
-            if (response.isSuccessful) {
-                Toast.makeText(context, "$commandName command sent successfully", Toast.LENGTH_SHORT)
-                    .show()
-            } else {
-                Toast.makeText(context, "Failed to send $commandName command", Toast.LENGTH_SHORT)
-                    .show()
-            }
-        }
-
-        override fun onFailure(call: Call<Void>, t: Throwable) {
-            Toast.makeText(context, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
-        }
-    })
-}
