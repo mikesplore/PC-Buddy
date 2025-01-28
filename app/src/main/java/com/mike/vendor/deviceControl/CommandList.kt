@@ -22,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
@@ -39,9 +40,10 @@ fun CommandList(
     modifier: Modifier = Modifier,
     gridColumns: Int = 2
 ) {
+    Text("Control the PC with these commands", style = CC.subtitleMedium(), modifier = Modifier.padding(16.dp, 8.dp))
     LazyVerticalGrid(
         columns = GridCells.Fixed(gridColumns),
-        contentPadding = PaddingValues(16.dp),
+        contentPadding = PaddingValues(16.dp, 8.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = modifier.fillMaxWidth()
@@ -66,15 +68,6 @@ private fun CommandCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val containerColor by animateColorAsState(
-        targetValue = if (isSelected) {
-            MaterialTheme.colorScheme.primaryContainer
-        } else {
-            CC.textColor()
-        },
-        label = "containerColor"
-    )
-
     val configurations = LocalConfiguration.current
     val density = LocalDensity.current
     val screenWidth = configurations.screenWidthDp.dp
@@ -88,7 +81,7 @@ private fun CommandCard(
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.medium),
         colors = CardDefaults.elevatedCardColors(
-            containerColor = containerColor
+            containerColor = Color(0xffC4E1F6)
         ),
         elevation = CardDefaults.elevatedCardElevation(
             defaultElevation = if (isSelected) 8.dp else 4.dp
@@ -117,8 +110,7 @@ private fun CommandCard(
 
             Text(
                 text = command.name.replaceFirstChar { it.uppercase() },
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurface,
+                style = CC.subtitleMedium(),
                 textAlign = TextAlign.Center,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -126,8 +118,7 @@ private fun CommandCard(
 
             Text(
                 text = command.description,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+                style = CC.subtitleSmall(),
                 textAlign = TextAlign.Center,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
