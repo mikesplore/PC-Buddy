@@ -2,6 +2,7 @@ package com.mike.vendor.model
 
 import android.content.Context
 import androidx.room.Room
+import com.mike.vendor.model.dao.BatteryDao
 import com.mike.vendor.model.dao.ServerDao
 import dagger.Module
 import dagger.Provides
@@ -28,5 +29,11 @@ object AppModule {
     @Singleton
     fun provideDeviceDao(database: AppDatabase): ServerDao {
         return database.serverDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideBatteryDao(database: AppDatabase): BatteryDao {
+        return database.batteryDao()
     }
 }
