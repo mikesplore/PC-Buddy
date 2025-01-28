@@ -5,8 +5,8 @@ import com.mike.vendor.model.dataClasses.DisplayInfo
 import javax.inject.Inject
 
 class DisplayRepository @Inject constructor(private val displayDao: DisplayDao){
-   suspend fun getDisplay(macAddress: String) = displayDao.getDisplayInfo(macAddress)
-    suspend fun insertDisplay(display: DisplayInfo) = displayDao.insertDisplayInfo(display)
-    suspend fun deleteDisplay() = displayDao.deleteDisplayInfo()
+    fun getDisplay(macAddress: String) = displayDao.getDisplayInfo(macAddress)
+     fun insertDisplay(display: DisplayInfo) = displayDao.insertDisplayInfo(display)
+     fun deleteDisplay() = displayDao.deleteDisplayInfo()
 
 }
