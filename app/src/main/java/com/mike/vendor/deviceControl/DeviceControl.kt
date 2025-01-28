@@ -3,16 +3,31 @@ package com.mike.vendor.deviceControl
 import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
+import androidx.compose.material.icons.rounded.BatteryFull
+import androidx.compose.material.icons.rounded.Memory
+import androidx.compose.material.icons.rounded.Tv
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -26,7 +41,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -35,6 +53,9 @@ import com.mike.vendor.api.commands
 import com.mike.vendor.api.sendCommand
 import com.mike.vendor.model.viewmodel.ServerViewModel
 import com.mike.vendor.ui.theme.CommonComponents as CC
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import coil.compose.AsyncImage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,7 +72,7 @@ fun ServerControlScreen(
     LaunchedEffect(macAddress) {
         serverViewModel.getServerOnlineStatus(macAddress)
         serverViewModel.getServer(macAddress).also {
-            Log.d("ServerControlScreen", "Fetched server: ${it}")
+            Log.d("ServerControlScreen", "Fetched server: $it")
         }
     }
 
@@ -76,8 +97,15 @@ fun ServerControlScreen(
                 },
                 modifier = Modifier.fillMaxWidth()
             )
-            //view PC information
-            ViewPCInformation(navController, macAddress)
+           Button(onClick = {navController.navigate("pcInfo/$macAddress")},
+               colors = ButtonDefaults.buttonColors(
+                   containerColor = CC.secondary(),
+                ),
+               shape = RoundedCornerShape(12.dp),
+               modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)
+               ) {
+                Text("View PC Information", style = CC.subtitleMedium())
+           }
         }
 
         // Confirmation Dialog
@@ -139,43 +167,3 @@ fun ServerControlScreen(
 }
 
 
-@Composable
-fun ViewPCInformation(navController: NavController, macAddress: String) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-
-        ) {
-        Text("View PC Information", style = CC.titleMedium())
-        Spacer(modifier = Modifier.height(16.dp))
-        NavigationButton(macAddress, "battery", "Battery", navController)
-        Spacer(modifier = Modifier.height(8.dp))
-        NavigationButton(macAddress, "memoryAndStorage", "Memory and Storage", navController)
-
-
-    }
-}
-
-@Composable
-fun NavigationButton(
-    macAddress: String,
-    path: String,
-    text: String,
-    navController: NavController
-
-) {
-    Button(
-        onClick = {
-            navController.navigate("$path/$macAddress")
-        },
-        colors = ButtonDefaults.buttonColors(
-            containerColor = CC.extra()
-        ),
-        shape = MaterialTheme.shapes.medium,
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
-        Text(text, style = CC.subtitleSmall())
-    }
-}
