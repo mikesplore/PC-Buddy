@@ -3,8 +3,11 @@ package com.mike.vendor.deviceControl
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowBackIos
@@ -40,6 +43,7 @@ fun TopAppBarComponent(
             IconButton(onClick = onBackPressed) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBackIos,
+                    tint = CC.textColor(),
                     contentDescription = "Back"
                 )
             }
@@ -50,18 +54,22 @@ fun TopAppBarComponent(
                 modifier = Modifier.padding(horizontal = 8.dp)
             ) {
 
-                Icon(Icons.Default.Computer, null, tint = tintcolor,
-                    modifier = Modifier.padding(8.dp))
+                Box(
+                    modifier = Modifier.background(tintcolor.copy(0.2f), shape = MaterialTheme.shapes.small),
+                    contentAlignment = Alignment.Center
+                ){
+                    Icon(Icons.Default.Computer, null, tint = tintcolor,
+                        modifier = Modifier.padding(8.dp))
+                }
                 Text(
                     text = deviceName,
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = CC.titleLarge(),
                     modifier = Modifier.padding(8.dp),
                 )
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = CC.secondary().copy(0.9f),
+            containerColor = Color(0xffC4E1F6).copy(0.9f),
         )
     )
 }
