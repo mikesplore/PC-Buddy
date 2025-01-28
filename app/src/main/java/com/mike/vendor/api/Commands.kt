@@ -59,7 +59,7 @@ val commands = listOf(
         "Are you sure you want to lock this device? This will require authentication to access the system again.") { apiService ->
         apiService.lock().also { println("Locking device") }
     },
-    Command("Logoff", "Sign out the current user", Icons.AutoMirrored.Default.ExitToApp, Color(0xff48A6A7), "Log out current user",
+    Command("Sign Out", "Sign out the current user", Icons.AutoMirrored.Default.ExitToApp, Color(0xff48A6A7), "Log out current user",
         "Are you sure you want to log off this device? This will end the current user session.") { apiService ->
         apiService.logoff().also { println("Logging off device") }
     }
