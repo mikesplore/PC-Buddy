@@ -54,7 +54,7 @@ fun AvailableDevicesScreen(
                     )
                 },
                 colors = TopAppBarDefaults.largeTopAppBarColors(
-                    containerColor = CC.secondary().copy(0.5f),
+                    containerColor = CC.extra(),
                 )
             )
         }
