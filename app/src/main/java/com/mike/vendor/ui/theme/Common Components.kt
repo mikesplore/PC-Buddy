@@ -83,5 +83,10 @@ object CommonComponents {
         return MaterialTheme.colorScheme.tertiary
     }
 
+    @Composable
+    fun extra(): Color {
+        return MaterialTheme.colorScheme.onSecondary
+    }
+
 
 }
