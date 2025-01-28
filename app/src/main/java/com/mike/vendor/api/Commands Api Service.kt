@@ -2,6 +2,7 @@ package com.mike.vendor.api
 
 
 import com.mike.vendor.model.dataClasses.BatteryDetails
+import com.mike.vendor.model.dataClasses.DisplayInfo
 import com.mike.vendor.model.dataClasses.MemoryDetails
 import com.mike.vendor.model.dataClasses.StorageInfo
 import retrofit2.Call
@@ -35,6 +36,9 @@ interface CommandApiService {
 
     @GET("memory")
     fun getMemory(): Call<MemoryDetails>
+
+    @GET("displays")
+    fun getDisplay(): Call<DisplayInfo>
 
 }
 
