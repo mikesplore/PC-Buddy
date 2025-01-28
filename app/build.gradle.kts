@@ -88,7 +88,7 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
 
     //coil dependency
-    implementation(libs.coil.compose)
+    implementation("io.coil-kt:coil-compose:2.5.0")
 
     //kotlin flow
     implementation(libs.kotlinx.coroutines.core)
