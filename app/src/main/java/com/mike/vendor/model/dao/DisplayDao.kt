@@ -10,13 +10,13 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface DisplayDao {
     @Query("SELECT * FROM display_info WHERE macAddress = :macAddress")
-    suspend fun getDisplayInfo(macAddress: String): Flow<List<DisplayInfo>>
+     fun getDisplayInfo(macAddress: String): Flow<List<DisplayInfo>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertDisplayInfo(displayInfo: DisplayInfo)
+     fun insertDisplayInfo(displayInfo: DisplayInfo)
 
     @Query("DELETE FROM display_info")
-    suspend fun deleteDisplayInfo()
+     fun deleteDisplayInfo()
 
 
 }
