@@ -69,6 +69,9 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     ksp(libs.hilt.compiler)
 
+    //accompanist
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.27.0")
+
     //ktor client
     implementation("io.ktor:ktor-client-core:2.3.3")
     implementation("io.ktor:ktor-client-cio:2.3.3")
