@@ -4,8 +4,10 @@ import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.AlertDialog
@@ -74,17 +76,8 @@ fun ServerControlScreen(
                 },
                 modifier = Modifier.fillMaxWidth()
             )
-            Button(
-                onClick = { navController.navigate("battery/$macAddress") },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = CC.secondary()
-                ),
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth()
-            ) {
-                Text("View Battery Details")
-            }
+            //view PC information
+            ViewPCInformation(navController, macAddress)
         }
 
         // Confirmation Dialog
@@ -141,5 +134,48 @@ fun ServerControlScreen(
                 }
             )
         }
+
+    }
+}
+
+
+@Composable
+fun ViewPCInformation(navController: NavController, macAddress: String) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+
+        ) {
+        Text("View PC Information", style = CC.titleMedium())
+        Spacer(modifier = Modifier.height(16.dp))
+        NavigationButton(macAddress, "battery", "Battery", navController)
+        Spacer(modifier = Modifier.height(8.dp))
+        NavigationButton(macAddress, "memoryAndStorage", "Memory and Storage", navController)
+
+
+    }
+}
+
+@Composable
+fun NavigationButton(
+    macAddress: String,
+    path: String,
+    text: String,
+    navController: NavController
+
+) {
+    Button(
+        onClick = {
+            navController.navigate("$path/$macAddress")
+        },
+        colors = ButtonDefaults.buttonColors(
+            containerColor = CC.extra()
+        ),
+        shape = MaterialTheme.shapes.medium,
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        Text(text, style = CC.subtitleSmall())
     }
 }
