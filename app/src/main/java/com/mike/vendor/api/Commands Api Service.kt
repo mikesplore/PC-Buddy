@@ -2,6 +2,8 @@ package com.mike.vendor.api
 
 
 import com.mike.vendor.model.dataClasses.BatteryDetails
+import com.mike.vendor.model.dataClasses.MemoryDetails
+import com.mike.vendor.model.dataClasses.StorageInfo
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -27,6 +29,12 @@ interface CommandApiService {
 
     @GET("battery")
     fun getBattery(): Call<BatteryDetails>
+
+    @GET("storage")
+    fun getStorage(): Call<StorageInfo>
+
+    @GET("memory")
+    fun getMemory(): Call<MemoryDetails>
 
 }
 
