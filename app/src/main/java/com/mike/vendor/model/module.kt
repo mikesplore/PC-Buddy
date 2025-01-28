@@ -3,7 +3,10 @@ package com.mike.vendor.model
 import android.content.Context
 import androidx.room.Room
 import com.mike.vendor.model.dao.BatteryDao
+import com.mike.vendor.model.dao.DisplayDao
+import com.mike.vendor.model.dao.MemoryAndStorageDao
 import com.mike.vendor.model.dao.ServerDao
+import com.mike.vendor.model.repositories.DisplayRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,4 +39,24 @@ object AppModule {
     fun provideBatteryDao(database: AppDatabase): BatteryDao {
         return database.batteryDao()
     }
+
+    @Provides
+    @Singleton
+    fun provideMemoryAndStorageDao(database: AppDatabase): MemoryAndStorageDao {
+        return database.memoryAndStorageDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideDisplayDao(database: AppDatabase): DisplayDao {
+        return database.displayDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideDisplayRepository(displayDao: DisplayDao): DisplayRepository {
+        return DisplayRepository(displayDao)
+    }
+
+
 }
