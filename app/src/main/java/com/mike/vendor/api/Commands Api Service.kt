@@ -1,13 +1,12 @@
 package com.mike.vendor.api
 
 
+import com.mike.vendor.model.dataClasses.BatteryDetails
 import retrofit2.Call
+import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface CommandApiService {
-    @POST("ping")
-    fun ping(): Call<Void>
-
     @POST("shutdown")
     fun shutdown(): Call<Void>
 
@@ -26,4 +25,8 @@ interface CommandApiService {
     @POST("lock")
     fun lock(): Call<Void>
 
+    @GET("battery")
+    fun getBattery(): Call<BatteryDetails>
+
 }
+
