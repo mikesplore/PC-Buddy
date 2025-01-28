@@ -5,12 +5,15 @@ import androidx.lifecycle.viewModelScope
 import com.mike.vendor.model.dataClasses.MemoryDetails
 import com.mike.vendor.model.dataClasses.StorageInfo
 import com.mike.vendor.model.repositories.MemoryAndStorageRepo
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MemoryAndStorageViewModel(private val memoryAndStorageRepo: MemoryAndStorageRepo) : ViewModel() {
+@HiltViewModel
+class MemoryAndStorageViewModel @Inject constructor(private val memoryAndStorageRepo: MemoryAndStorageRepo) : ViewModel() {
     private val _memoryDetails = MutableStateFlow(MemoryDetails())
     val memoryDetails = _memoryDetails.asStateFlow()
 
