@@ -38,7 +38,7 @@ interface CommandApiService {
     fun getMemory(): Call<MemoryDetails>
 
     @GET("displays")
-    fun getDisplay(): Call<DisplayInfo>
+    fun getDisplay(): Call<List<DisplayInfo>>
 
 }
 
