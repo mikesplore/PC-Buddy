@@ -4,6 +4,8 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import com.mike.vendor.model.dataClasses.BatteryDetails
+import com.mike.vendor.model.dataClasses.MemoryDetails
+import com.mike.vendor.model.dataClasses.StorageInfo
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -59,6 +61,73 @@ fun fetchBatteryInfo(
         }
 
         override fun onFailure(call: Call<BatteryDetails>, t: Throwable) {
+            onFailure("Error: ${t.message}")
+        }
+    })
+}
+
+
+fun fetchMemoryInfo(
+    ipAddress: String,
+    port: Int,
+    onSuccess: (MemoryDetails) -> Unit,
+    onFailure: (String) -> Unit
+) {
+    val baseUrl = "http://$ipAddress:$port"
+    val apiService = RetrofitClient.create(baseUrl)
+    val call: Call<MemoryDetails> = apiService.getMemory()
+
+    call.enqueue(object : Callback<MemoryDetails> {
+        override fun onResponse(call: Call<MemoryDetails>, response: Response<MemoryDetails>) {
+            if (response.isSuccessful) {
+                Log.d("fetchMemoryInfo", "Response successful")
+                response.body()?.let { data ->
+                    onSuccess(data)
+                    Log.d("fetchMemoryInfo", "Data: $data")
+                } ?: run {
+                    onFailure("Failed to fetch memory info: Empty response")
+                    Log.d("fetchMemoryInfo", "Empty response")
+                }
+            } else {
+                Log.d("fetchMemoryInfo", "Failed to fetch memory info: ${response.message()}")
+                onFailure("Failed to fetch memory info: ${response.message()}")
+            }
+        }
+
+        override fun onFailure(call: Call<MemoryDetails>, t: Throwable) {
+            onFailure("Error: ${t.message}")
+        }
+    })
+}
+
+fun fetchStorageInfo(
+    ipAddress: String,
+    port: Int,
+    onSuccess: (StorageInfo) -> Unit,
+    onFailure: (String) -> Unit
+) {
+    val baseUrl = "http://$ipAddress:$port"
+    val apiService = RetrofitClient.create(baseUrl)
+    val call: Call<StorageInfo> = apiService.getStorage()
+
+    call.enqueue(object : Callback<StorageInfo> {
+        override fun onResponse(call: Call<StorageInfo>, response: Response<StorageInfo>) {
+            if (response.isSuccessful) {
+                Log.d("fetchStorageInfo", "Response successful")
+                response.body()?.let { data ->
+                    onSuccess(data)
+                    Log.d("fetchStorageInfo", "Data: $data")
+                } ?: run {
+                    onFailure("Failed to fetch storage info: Empty response")
+                    Log.d("fetchStorageInfo", "Empty response")
+                }
+            } else {
+                Log.d("fetchStorageInfo", "Failed to fetch storage info: ${response.message()}")
+                onFailure("Failed to fetch storage info: ${response.message()}")
+            }
+        }
+
+        override fun onFailure(call: Call<StorageInfo>, t: Throwable) {
             onFailure("Error: ${t.message}")
         }
     })
