@@ -14,16 +14,14 @@ import javax.inject.Inject
 @HiltViewModel
 class DisplayViewModel @Inject constructor(private val displayRepository: DisplayRepository) :
     ViewModel() {
-    private val _display = MutableStateFlow<DisplayInfo?>(null)
+    private val _display = MutableStateFlow<List<DisplayInfo>?>(null)
     val display = _display.asStateFlow()
 
     fun getDisplayInfo(macAddress: String) {
         viewModelScope.launch(Dispatchers.Main) {
             val displayInfo = displayRepository.getDisplay(macAddress)
-            displayInfo.collect { displayInfoList ->
-                displayInfoList.forEach {
-                    _display.value = it
-                }
+            displayInfo.collect { displayInfo ->
+                _display.value = displayInfo
             }
         }
     }
