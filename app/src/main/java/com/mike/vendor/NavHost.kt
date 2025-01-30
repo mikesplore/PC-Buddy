@@ -10,6 +10,7 @@ import com.mike.vendor.deviceControl.ServerControlScreen
 import com.mike.vendor.specs.BatteryDetailsScreen
 import com.mike.vendor.specs.DisplayInfoScreen
 import com.mike.vendor.specs.MemoryAndStorageDetails
+import com.mike.vendor.specs.SystemInfoScreen
 import com.mike.vendor.specs.ViewPCInformation
 
 @Composable
@@ -59,6 +60,14 @@ fun AppNavHost(
             ViewPCInformation(
                 macAddress = backStackEntry.arguments?.getString("macAddress") ?: "",
                 navController = navController,
+            )
+        }
+
+        composable("systemInfo/{macAddress}") { backStackEntry ->
+            SystemInfoScreen(
+                macAddress = backStackEntry.arguments?.getString("macAddress") ?: "",
+                navController = navController,
+                context = context
             )
         }
     }
