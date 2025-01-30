@@ -69,6 +69,15 @@ object CommonComponents {
     }
 
     @Composable
+    fun labelMedium(): TextStyle{
+        return TextStyle(
+            color = textColor(),
+            fontWeight = FontWeight.Normal,
+            fontSize = 12.sp
+        )
+    }
+
+    @Composable
     fun primary(): Color {
         return MaterialTheme.colorScheme.primary
     }
