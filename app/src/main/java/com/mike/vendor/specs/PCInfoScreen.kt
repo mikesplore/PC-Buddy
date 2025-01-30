@@ -23,6 +23,7 @@ import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
 import androidx.compose.material.icons.rounded.BatteryFull
 import androidx.compose.material.icons.rounded.KeyboardArrowRight
 import androidx.compose.material.icons.rounded.Memory
+import androidx.compose.material.icons.rounded.SettingsSystemDaydream
 import androidx.compose.material.icons.rounded.Tv
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -110,6 +111,7 @@ fun ViewPCInformation(navController: NavController, macAddress: String) {
                         "battery" -> "battery"
                         "memoryAndStorage" -> "memoryAndStorage"
                         "display" -> "display"
+                        "systemInfo" -> "systemInfo"
                         else -> ""
                     },
                 )
@@ -147,7 +149,15 @@ private fun getNavigationItems() = listOf(
         title = "Display",
         description = "Monitor resolution and specifications",
         path = "display"
+    ),
+    NavigationItem(
+        icon = Icons.Rounded.SettingsSystemDaydream,
+        title = "System Info",
+        description = "View system information",
+        path = "systemInfo"
     )
+
+
 )
 
 @Composable
