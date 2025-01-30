@@ -1,21 +1,34 @@
 package com.mike.vendor.deviceControl
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Computer
 import androidx.compose.material.icons.filled.HourglassEmpty
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -26,9 +39,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.mike.vendor.model.Server
 import com.mike.vendor.model.viewmodel.ServerViewModel
 import com.mike.vendor.ui.theme.CommonComponents as CC
 
@@ -48,10 +63,20 @@ fun AvailableDevicesScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(
-                        text = "PC Buddy",
-                        style = CC.titleLarge()
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Computer,
+                            contentDescription = null,
+                            tint = CC.textColor()
+                        )
+                        Text(
+                            text = "PC Buddy",
+                            style = CC.titleLarge()
+                        )
+                    }
                 },
                 colors = TopAppBarDefaults.largeTopAppBarColors(
                     containerColor = CC.extra(),
@@ -59,59 +84,102 @@ fun AvailableDevicesScreen(
             )
         }
     ) { padding ->
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(CC.primary())
                 .padding(padding)
-                .padding(horizontal = 16.dp)
         ) {
-            AnimatedVisibility(
-                visible = true,
-                enter = fadeIn() + expandVertically()
-            ) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    if (availableDevices.isEmpty()) {
-                        NoDevicesFound()
-                    } else {
-                        Column {
-                            Text(
-                                text = "Available PCs",
-                                style = CC.subtitleLarge(),
-                                modifier = Modifier.padding(vertical = 8.dp)
-                            )
-                            Text(
-                                text = "Ensure the server is active on the device to appear here.",
-                                style = CC.subtitleSmall(),
-                                color = CC.secondary(),
-                                modifier = Modifier.padding(bottom = 8.dp)
-                            )
-                            LazyColumn(
-                                modifier = Modifier.weight(1f),
-                                verticalArrangement = Arrangement.spacedBy(12.dp)
-                            ) {
+            val onlineDevices = availableDevices.filter { it.onlineStatus }
+            val offlineDevices = availableDevices.filter { !it.onlineStatus }
 
-                                itemsIndexed(
-                                    availableDevices,
-                                    key = { _, device -> device.macAddress }
-                                ) { _, device ->
-                                    AnimatedVisibility(
-                                        visible = true,
-                                        enter = fadeIn() + expandVertically()
-                                    ) {
-                                        DeviceCard(
-                                            device = device,
-                                            navController = navController
-                                        )
-                                    }
-                                }
+
+                if (availableDevices.isEmpty()) {
+                    NoDevicesFound()
+                } else {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 16.dp)
+                    ) {
+
+                        if (onlineDevices.isNotEmpty()) {
+                            AnimatedVisibility(
+                                visible = true,
+                                enter = slideInVertically(animationSpec = tween(500)) + fadeIn(),
+                                exit = slideOutVertically(animationSpec = tween(500)) + fadeOut()
+                            ) {
+                            DeviceSection(
+                                title = "Online PCs",
+                                subtitle = "Ready for connection",
+                                devices = onlineDevices,
+                                navController = navController
+                            )
+                        }}
+
+                        if (offlineDevices.isNotEmpty()) {
+                            AnimatedVisibility(
+                                visible = true,
+                                enter = slideInVertically(animationSpec = tween(500)) + fadeIn(),
+                                exit = slideOutVertically(animationSpec = tween(500)) + fadeOut()
+                            ) {
+                                DeviceSection(
+                                    title = "Offline PCs",
+                                    subtitle = "Previously connected",
+                                    devices = offlineDevices,
+                                    navController = navController
+                                )
                             }
                         }
                     }
                 }
+
+        }
+    }
+}
+
+@Composable
+private fun DeviceSection(
+    title: String,
+    subtitle: String,
+    devices: List<Server>,
+    navController: NavController
+) {
+    Column(
+        modifier = Modifier.padding(vertical = 8.dp)
+    ) {
+        Row(
+            modifier = Modifier.padding(vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Column (
+                verticalArrangement = Arrangement.Center
+            ){
+                Text(
+                    text = title,
+                    style = CC.titleSmall()
+                )
+                Text(
+                    text = subtitle,
+                    style = CC.subtitleSmall(),
+                    color = CC.secondary()
+                )
+            }
+
+        }
+
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            itemsIndexed(
+                devices,
+                key = { _, device -> device.macAddress }
+            ) { _, device ->
+                DeviceCard(
+                    device = device,
+                    navController = navController
+                )
             }
         }
     }
@@ -120,27 +188,43 @@ fun AvailableDevicesScreen(
 @Composable
 fun NoDevicesFound() {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(32.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Icon(
-            imageVector = Icons.Default.HourglassEmpty,
-            contentDescription = null,
-            tint = CC.primary(),
-            modifier = Modifier.size(64.dp)
-        )
-        Text(
-            text = "No devices found",
-            style = CC.titleMedium(),
-            color = CC.secondary(),
-            modifier = Modifier.padding(vertical = 16.dp)
-        )
-        Text(
-            text = "New devices will appear here once discovered",
-            color = CC.secondary(),
-            style = CC.titleSmall()
-        )
+        Card(
+            modifier = Modifier.padding(16.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = CC.extra().copy(alpha = 0.1f)
+            )
+        ) {
+            Column(
+                modifier = Modifier.padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Icon(
+                    imageVector = Icons.Default.HourglassEmpty,
+                    contentDescription = null,
+                    tint = CC.textColor(),
+                    modifier = Modifier
+                        .size(64.dp)
+                        .padding(bottom = 16.dp)
+                )
+                Text(
+                    text = "No devices detected",
+                    style = CC.titleMedium(),
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+                Text(
+                    text = "Online or previously connected devices will appear here.",
+                    style = CC.subtitleSmall(),
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
     }
 }
+
 
