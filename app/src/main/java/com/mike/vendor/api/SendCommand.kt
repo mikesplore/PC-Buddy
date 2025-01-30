@@ -4,9 +4,15 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import com.mike.vendor.model.dataClasses.BatteryDetails
+import com.mike.vendor.model.dataClasses.ComputerSystemDetails
 import com.mike.vendor.model.dataClasses.DisplayInfo
 import com.mike.vendor.model.dataClasses.MemoryDetails
+import com.mike.vendor.model.dataClasses.OperatingSystemInfo
+import com.mike.vendor.model.dataClasses.ProcessorDetails
+import com.mike.vendor.model.dataClasses.SoftwareInfo
 import com.mike.vendor.model.dataClasses.StorageInfo
+import com.mike.vendor.model.dataClasses.SystemInfo
+import com.mike.vendor.model.dataClasses.UserEnvironmentInfo
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -20,7 +26,11 @@ fun sendCommand(commandName: String, context: Context, ipAddress: String, port: 
     call.enqueue(object : Callback<Void> {
         override fun onResponse(call: Call<Void>, response: Response<Void>) {
             if (response.isSuccessful) {
-                Toast.makeText(context, "$commandName command sent successfully", Toast.LENGTH_SHORT)
+                Toast.makeText(
+                    context,
+                    "$commandName command sent successfully",
+                    Toast.LENGTH_SHORT
+                )
                     .show()
             } else {
                 Toast.makeText(context, "Failed to send $commandName command", Toast.LENGTH_SHORT)
@@ -146,7 +156,10 @@ fun fetchDisplayInfo(
     val call: Call<List<DisplayInfo>> = apiService.getDisplay()
 
     call.enqueue(object : Callback<List<DisplayInfo>> {
-        override fun onResponse(call: Call<List<DisplayInfo>>, response: Response<List<DisplayInfo>>) {
+        override fun onResponse(
+            call: Call<List<DisplayInfo>>,
+            response: Response<List<DisplayInfo>>
+        ) {
             if (response.isSuccessful) {
                 Log.d("fetchDisplayInfo", "Response successful")
                 response.body()?.let { data ->
@@ -166,4 +179,144 @@ fun fetchDisplayInfo(
             onFailure("Error: ${t.message}")
         }
     })
+}
+
+
+fun fetchSystemInfo(
+    ipAddress: String,
+    port: Int,
+    onSuccess: (SystemInfo) -> Unit,
+    onFailure: (String) -> Unit
+) {
+    val baseUrl = "http://$ipAddress:$port"
+    val apiService = RetrofitClient.create(baseUrl)
+
+    // Create Retrofit calls for all the data you want to fetch
+    val processorCall: Call<ProcessorDetails> = apiService.getProcessor()
+    val computerSystemCall: Call<ComputerSystemDetails> = apiService.getCurrentSystemInfo()
+    val osInfoCall: Call<OperatingSystemInfo> = apiService.getOperatingSystemInfo()
+    val softwareInfoCall: Call<SoftwareInfo> = apiService.getSoftware()
+    val userEnvInfoCall: Call<UserEnvironmentInfo> = apiService.getUserEnvironmentInfo()
+
+    // Create a list to collect all the successful responses
+    val responses = mutableMapOf<String, Any>()
+
+    // Check if all responses are received
+    fun checkAllResponses(onSuccess: (SystemInfo) -> Unit, responses: MutableMap<String, Any>) {
+        if (responses.size == 5) {
+            val systemInfo = SystemInfo(
+                responses["processorDetails"] as ProcessorDetails?,
+                responses["computerSystemDetails"] as ComputerSystemDetails?,
+                responses["operatingSystemInfo"] as OperatingSystemInfo?,
+                responses["softwareInfo"] as SoftwareInfo?,
+                responses["userEnvironmentInfo"] as UserEnvironmentInfo?
+            )
+            onSuccess(systemInfo)
+        }
+    }
+
+    // Create separate callback functions for each API call
+    val processorCallback = object : Callback<ProcessorDetails> {
+        override fun onResponse(
+            call: Call<ProcessorDetails>,
+            response: Response<ProcessorDetails>
+        ) {
+            if (response.isSuccessful) {
+                response.body()?.let { data ->
+                    responses["processorDetails"] = data
+                    checkAllResponses(onSuccess, responses)
+                } ?: onFailure("Failed to fetch processor details: Empty response")
+            } else {
+                onFailure("Failed to fetch processor details: ${response.message()}")
+            }
+        }
+
+        override fun onFailure(call: Call<ProcessorDetails>, t: Throwable) {
+            onFailure("Error fetching processor details: ${t.message}")
+        }
+    }
+
+    val computerSystemCallback = object : Callback<ComputerSystemDetails> {
+        override fun onResponse(
+            call: Call<ComputerSystemDetails>,
+            response: Response<ComputerSystemDetails>
+        ) {
+            if (response.isSuccessful) {
+                response.body()?.let { data ->
+                    responses["computerSystemDetails"] = data
+                    checkAllResponses(onSuccess, responses)
+                } ?: onFailure("Failed to fetch computer system details: Empty response")
+            } else {
+                onFailure("Failed to fetch computer system details: ${response.message()}")
+            }
+        }
+
+        override fun onFailure(call: Call<ComputerSystemDetails>, t: Throwable) {
+            onFailure("Error fetching computer system details: ${t.message}")
+        }
+    }
+
+    val osInfoCallback = object : Callback<OperatingSystemInfo> {
+        override fun onResponse(
+            call: Call<OperatingSystemInfo>,
+            response: Response<OperatingSystemInfo>
+        ) {
+            if (response.isSuccessful) {
+                response.body()?.let { data ->
+                    responses["operatingSystemInfo"] = data
+                    checkAllResponses(onSuccess, responses)
+                } ?: onFailure("Failed to fetch OS info: Empty response")
+            } else {
+                onFailure("Failed to fetch OS info: ${response.message()}")
+            }
+        }
+
+        override fun onFailure(call: Call<OperatingSystemInfo>, t: Throwable) {
+            onFailure("Error fetching OS info: ${t.message}")
+        }
+    }
+
+    val softwareInfoCallback = object : Callback<SoftwareInfo> {
+        override fun onResponse(call: Call<SoftwareInfo>, response: Response<SoftwareInfo>) {
+            if (response.isSuccessful) {
+                response.body()?.let { data ->
+                    responses["softwareInfo"] = data
+                    checkAllResponses(onSuccess, responses)
+                } ?: onFailure("Failed to fetch software info: Empty response")
+            } else {
+                onFailure("Failed to fetch software info: ${response.message()}")
+            }
+        }
+
+        override fun onFailure(call: Call<SoftwareInfo>, t: Throwable) {
+            onFailure("Error fetching software info: ${t.message}")
+        }
+    }
+
+    val userEnvInfoCallback = object : Callback<UserEnvironmentInfo> {
+        override fun onResponse(
+            call: Call<UserEnvironmentInfo>,
+            response: Response<UserEnvironmentInfo>
+        ) {
+            if (response.isSuccessful) {
+                response.body()?.let { data ->
+                    responses["userEnvironmentInfo"] = data
+                    checkAllResponses(onSuccess, responses)
+                } ?: onFailure("Failed to fetch user environment info: Empty response")
+            } else {
+                onFailure("Failed to fetch user environment info: ${response.message()}")
+            }
+        }
+
+        override fun onFailure(call: Call<UserEnvironmentInfo>, t: Throwable) {
+            onFailure("Error fetching user environment info: ${t.message}")
+        }
+    }
+
+    // Enqueue all the calls
+    processorCall.enqueue(processorCallback)
+    computerSystemCall.enqueue(computerSystemCallback)
+    osInfoCall.enqueue(osInfoCallback)
+    softwareInfoCall.enqueue(softwareInfoCallback)
+    userEnvInfoCall.enqueue(userEnvInfoCallback)
 }
