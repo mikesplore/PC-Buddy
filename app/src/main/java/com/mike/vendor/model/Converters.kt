@@ -4,6 +4,7 @@ import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.mike.vendor.model.dataClasses.MountPointDetails
+import java.util.Locale
 
 class Converters {
     @TypeConverter
@@ -32,6 +33,30 @@ class Converters {
         val gson = Gson()
         val type = object : TypeToken<List<String>>() {}.type
         return gson.fromJson(value, type)
+    }
+
+    @TypeConverter
+    fun fromLongArray(value: LongArray): String {
+        val gson = Gson()
+        val type = object : TypeToken<LongArray>() {}.type
+        return gson.toJson(value, type)
+    }
+
+    @TypeConverter
+    fun toLongArray(value: String): LongArray {
+        val gson = Gson()
+        val type = object : TypeToken<LongArray>() {}.type
+        return gson.fromJson(value, type)
+    }
+
+    @TypeConverter
+    fun fromLocale(value: Locale): String {
+        return value.toString()
+    }
+
+    @TypeConverter
+    fun toLocale(value: String): Locale {
+        return Locale(value)
     }
 
 }
