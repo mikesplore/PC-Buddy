@@ -106,6 +106,16 @@ fun ServerControlScreen(
                ) {
                 Text("View PC Information", style = CC.subtitleMedium())
            }
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(onClick = {navController.navigate("nb")},
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = CC.tertiary(),
+                ),
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)
+            ) {
+                Text("Summary Documentation", style = CC.subtitleMedium())
+            }
         }
 
         // Confirmation Dialog
@@ -165,5 +175,7 @@ fun ServerControlScreen(
 
     }
 }
+
+
 
 
