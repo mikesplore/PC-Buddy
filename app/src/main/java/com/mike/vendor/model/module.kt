@@ -6,7 +6,9 @@ import com.mike.vendor.model.dao.BatteryDao
 import com.mike.vendor.model.dao.DisplayDao
 import com.mike.vendor.model.dao.MemoryAndStorageDao
 import com.mike.vendor.model.dao.ServerDao
+import com.mike.vendor.model.dao.SystemInfoDao
 import com.mike.vendor.model.repositories.DisplayRepository
+import com.mike.vendor.model.repositories.SystemInfoRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -56,6 +58,18 @@ object AppModule {
     @Singleton
     fun provideDisplayRepository(displayDao: DisplayDao): DisplayRepository {
         return DisplayRepository(displayDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSystemInfoDao(database: AppDatabase): SystemInfoDao {
+        return database.systemInfoDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideSystemInfoRepository(systemInfoDao: SystemInfoDao): SystemInfoRepository {
+        return SystemInfoRepository(systemInfoDao)
     }
 
 
