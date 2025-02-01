@@ -2,7 +2,6 @@ package com.mike.vendor.deviceControl
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
@@ -12,10 +11,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -23,12 +19,10 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Computer
 import androidx.compose.material.icons.filled.HourglassEmpty
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -94,45 +88,46 @@ fun AvailableDevicesScreen(
             val offlineDevices = availableDevices.filter { !it.onlineStatus }
 
 
-                if (availableDevices.isEmpty()) {
-                    NoDevicesFound()
-                } else {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(horizontal = 16.dp)
-                    ) {
+            if (availableDevices.isEmpty()) {
+                NoDevicesFound()
+            } else {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 16.dp)
+                ) {
 
-                        if (onlineDevices.isNotEmpty()) {
-                            AnimatedVisibility(
-                                visible = true,
-                                enter = slideInVertically(animationSpec = tween(500)) + fadeIn(),
-                                exit = slideOutVertically(animationSpec = tween(500)) + fadeOut()
-                            ) {
+                    if (onlineDevices.isNotEmpty()) {
+                        AnimatedVisibility(
+                            visible = true,
+                            enter = slideInVertically(animationSpec = tween(500)) + fadeIn(),
+                            exit = slideOutVertically(animationSpec = tween(500)) + fadeOut()
+                        ) {
                             DeviceSection(
                                 title = "Online PCs",
                                 subtitle = "Ready for connection",
                                 devices = onlineDevices,
                                 navController = navController
                             )
-                        }}
+                        }
+                    }
 
-                        if (offlineDevices.isNotEmpty()) {
-                            AnimatedVisibility(
-                                visible = true,
-                                enter = slideInVertically(animationSpec = tween(500)) + fadeIn(),
-                                exit = slideOutVertically(animationSpec = tween(500)) + fadeOut()
-                            ) {
-                                DeviceSection(
-                                    title = "Offline PCs",
-                                    subtitle = "Previously connected",
-                                    devices = offlineDevices,
-                                    navController = navController
-                                )
-                            }
+                    if (offlineDevices.isNotEmpty()) {
+                        AnimatedVisibility(
+                            visible = true,
+                            enter = slideInVertically(animationSpec = tween(500)) + fadeIn(),
+                            exit = slideOutVertically(animationSpec = tween(500)) + fadeOut()
+                        ) {
+                            DeviceSection(
+                                title = "Offline PCs",
+                                subtitle = "Previously connected",
+                                devices = offlineDevices,
+                                navController = navController
+                            )
                         }
                     }
                 }
+            }
 
         }
     }
@@ -153,9 +148,9 @@ private fun DeviceSection(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Column (
+            Column(
                 verticalArrangement = Arrangement.Center
-            ){
+            ) {
                 Text(
                     text = title,
                     style = CC.titleSmall()
@@ -197,7 +192,7 @@ fun NoDevicesFound() {
         Card(
             modifier = Modifier.padding(16.dp),
             colors = CardDefaults.cardColors(
-                containerColor = CC.extra().copy(alpha = 0.1f)
+                containerColor = CC.extra().copy(alpha = 0.3f)
             )
         ) {
             Column(
