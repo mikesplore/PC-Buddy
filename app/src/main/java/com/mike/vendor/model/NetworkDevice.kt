@@ -9,7 +9,8 @@ data class Server(
     val name: String,
     val host: String,
     val port: Int,
-    var onlineStatus: Boolean = true
+    var onlineStatus: Boolean = true,
+    var isBlocked: Boolean = false
 ){
-    constructor(): this("", "", "", 0)
+    constructor(): this("", "", "", 0, false)
 }
