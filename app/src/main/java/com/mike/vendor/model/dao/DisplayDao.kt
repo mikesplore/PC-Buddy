@@ -15,8 +15,7 @@ interface DisplayDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
      fun insertDisplayInfo(displayInfo: DisplayInfo)
 
-    @Query("DELETE FROM display_info")
-     fun deleteDisplayInfo()
-
+    @Query("DELETE FROM display_info WHERE macAddress = :macAddress")
+     fun deleteDisplayInfo(macAddress: String)
 
 }
