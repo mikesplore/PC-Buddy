@@ -67,6 +67,7 @@ private suspend fun updateServerStatusesAndHosts(
 
             if (dbServer.onlineStatus != shouldBeOnline || hostChanged) {
                 val updatedServer = dbServer.copy(
+                    name = discoveredServer.name,
                     onlineStatus = shouldBeOnline,
                     host = discoveredServer.host
                 )
