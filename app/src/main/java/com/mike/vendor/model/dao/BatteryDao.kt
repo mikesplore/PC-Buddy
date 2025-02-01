@@ -15,7 +15,7 @@ interface BatteryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertBatteryDetails(batteryDetails: BatteryDetails)
 
-    @Query("DELETE FROM battery")
-    suspend fun deleteAllBatteryDetails()
+    @Query("DELETE FROM battery WHERE macAddress= :macAddress")
+    suspend fun deleteAllBatteryDetails(macAddress: String)
 
 }
