@@ -40,9 +40,9 @@ class BatteryViewModel @Inject constructor(private val batteryRepository: Batter
         }
     }
 
-    fun deleteAllBatteryDetails() {
+    fun deleteAllBatteryDetails(macAddress: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            batteryRepository.deleteAllBatteryDetails()
+            batteryRepository.deleteAllBatteryDetails(macAddress)
         }
     }
 
