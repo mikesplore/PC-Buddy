@@ -44,4 +44,10 @@ class MemoryAndStorageViewModel @Inject constructor(private val memoryAndStorage
         }
     }
 
+    fun deleteMemoryDetails(macAddress: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            memoryAndStorageRepo.deleteMemoryDetails(macAddress)
+        }
+    }
+
 }
