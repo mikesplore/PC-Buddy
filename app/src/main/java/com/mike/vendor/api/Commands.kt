@@ -51,7 +51,7 @@ val commands = listOf(
         "Are you sure you want to put this device into sleep mode? This will pause all activities and reduce power consumption.") { apiService ->
         apiService.sleep().also { println("Putting device to sleep") }
     },
-    Command("Hibernate", "Hibernate the device", Icons.Default.ModeStandby, Color(0xFF3F51B5), "Hibernate Device",
+    Command("Hibernate", "Hibernate the device", Icons.Default.ModeStandby, Color(0xFF7C444F), "Hibernate Device",
         "Are you sure you want to hibernate this device? This will save the current state and turn off the system.") { apiService ->
         apiService.hibernate().also { println("Hibernating device") }
     },
