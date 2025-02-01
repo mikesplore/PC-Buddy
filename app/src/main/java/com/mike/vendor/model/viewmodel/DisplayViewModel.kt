@@ -20,8 +20,8 @@ class DisplayViewModel @Inject constructor(private val displayRepository: Displa
     fun getDisplayInfo(macAddress: String) {
         viewModelScope.launch(Dispatchers.Main) {
             val displayInfo = displayRepository.getDisplay(macAddress)
-            displayInfo.collect { displayInfo ->
-                _display.value = displayInfo
+            displayInfo.collect { displayInf ->
+                _display.value = displayInf
             }
         }
     }
@@ -38,9 +38,9 @@ class DisplayViewModel @Inject constructor(private val displayRepository: Displa
         }
     }
 
-    fun deleteDisplayInfo() {
+    fun deleteDisplayInfo(macAddress: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            displayRepository.deleteDisplay()
+            displayRepository.deleteDisplay(macAddress)
         }
     }
 }
