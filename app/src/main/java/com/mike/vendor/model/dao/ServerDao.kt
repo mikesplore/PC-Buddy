@@ -37,14 +37,14 @@ interface ServerDao {
      * @param isOnline The new online status of the server.
      */
     @Query("UPDATE servers SET onlineStatus = :isOnline WHERE macAddress = :macAddress")
-     fun updateServerOnlineStatus(macAddress: String, isOnline: Boolean)
+    fun updateServerOnlineStatus(macAddress: String, isOnline: Boolean)
 
     /**
      * Updates all the `Server` entities in the database.
      * If a server does not exist, it will be inserted.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-     fun updateServer(server: Server)
+    fun updateServer(server: Server)
 
     /**
      * Deletes all `Server` entities from the database.
@@ -69,6 +69,16 @@ interface ServerDao {
      */
     @Query("SELECT * FROM servers WHERE macAddress = :macAddress")
     fun getServer(macAddress: String): Flow<Server>
+
+
+
+    /**
+     * Deletes a `Server` entity identified by its MAC address.
+     *
+     * @param macAddress The MAC address of the server to delete.
+     */
+    @Query("DELETE FROM servers WHERE macAddress = :macAddress")
+    fun deleteServer(macAddress: String)
 }
 
 
