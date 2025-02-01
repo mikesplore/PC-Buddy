@@ -52,4 +52,29 @@ interface SystemInfoDao {
     @Query("SELECT * FROM user_environment_info WHERE macAddress = :macAddress")
     fun getUserEnvironmentInfo(macAddress: String): Flow<UserEnvironmentInfo>
 
+    @Query("DELETE FROM processor_details WHERE macAddress = :macAddress")
+    suspend fun deleteProcessorDetails(macAddress: String)
+
+    @Query("DELETE FROM computer_system_details WHERE macAddress = :macAddress")
+    suspend fun deleteComputerSystemDetails(macAddress: String)
+
+    @Query("DELETE FROM operating_system_info WHERE macAddress = :macAddress")
+    suspend fun deleteOperatingSystemInfo(macAddress: String)
+
+    @Query("DELETE FROM software_info WHERE macAddress = :macAddress")
+    suspend fun deleteSoftwareInfo(macAddress: String)
+
+    @Query("DELETE FROM user_environment_info WHERE macAddress = :macAddress")
+    suspend fun deleteUserEnvironmentInfo(macAddress: String)
+
+
+    @Transaction
+    suspend fun deleteAllSystemInfo(macAddress: String) {
+        deleteProcessorDetails(macAddress)
+        deleteComputerSystemDetails(macAddress)
+        deleteOperatingSystemInfo(macAddress)
+        deleteSoftwareInfo(macAddress)
+        deleteUserEnvironmentInfo(macAddress)
+    }
+
 }
