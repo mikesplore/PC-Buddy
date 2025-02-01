@@ -23,4 +23,8 @@ class MemoryAndStorageRepo @Inject constructor(
     suspend fun getStorageInfo(macAddress: String): StorageInfo {
         return memoryAndStorageDao.getStorageInfo(macAddress)
     }
+
+    suspend fun deleteMemoryDetails(macAddress: String) {
+        memoryAndStorageDao.deleteMemoryDetails(macAddress)
+    }
 }
