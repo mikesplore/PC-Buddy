@@ -19,7 +19,7 @@ fun AppNavHost(
 ) {
     val navController = rememberNavController()
 
-    NavHost(startDestination = "hom", navController = navController) {
+    NavHost(startDestination = "home", navController = navController) {
         composable("home") {
             AvailableDevicesScreen(navController)
         }
