@@ -37,7 +37,6 @@ import com.mike.vendor.api.sendCommand
 import com.mike.vendor.model.viewmodel.ServerViewModel
 import com.mike.vendor.ui.theme.CommonComponents as CC
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ServerControlScreen(
     macAddress: String,
