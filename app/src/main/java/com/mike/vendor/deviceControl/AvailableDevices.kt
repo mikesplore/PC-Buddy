@@ -33,6 +33,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -48,6 +51,7 @@ fun AvailableDevicesScreen(
 ) {
     val serverViewModel: ServerViewModel = hiltViewModel()
     val availableDevices by serverViewModel.servers.collectAsState()
+
 
     LaunchedEffect(Unit) {
         serverViewModel.getAllServers()
@@ -68,12 +72,13 @@ fun AvailableDevicesScreen(
                         )
                         Text(
                             text = "PC Buddy",
-                            style = CC.titleLarge()
+                            style = CC.titleLarge(),
+                            fontFamily = FontFamily.Cursive,
                         )
                     }
                 },
                 colors = TopAppBarDefaults.largeTopAppBarColors(
-                    containerColor = CC.extra(),
+                    containerColor = CC.primary(),
                 )
             )
         }
@@ -96,6 +101,7 @@ fun AvailableDevicesScreen(
                         .fillMaxSize()
                         .padding(horizontal = 16.dp)
                 ) {
+                    Text("The List refreshes every 10 seconds", style = CC.subtitleSmall().copy(color = CC.textColor().copy(alpha = 0.5f)))
 
                     if (onlineDevices.isNotEmpty()) {
                         AnimatedVisibility(
@@ -105,7 +111,6 @@ fun AvailableDevicesScreen(
                         ) {
                             DeviceSection(
                                 title = "Online PCs",
-                                subtitle = "Ready for connection",
                                 devices = onlineDevices,
                                 navController = navController
                             )
@@ -120,7 +125,6 @@ fun AvailableDevicesScreen(
                         ) {
                             DeviceSection(
                                 title = "Offline PCs",
-                                subtitle = "Previously connected",
                                 devices = offlineDevices,
                                 navController = navController
                             )
@@ -136,7 +140,6 @@ fun AvailableDevicesScreen(
 @Composable
 private fun DeviceSection(
     title: String,
-    subtitle: String,
     devices: List<Server>,
     navController: NavController
 ) {
@@ -154,11 +157,6 @@ private fun DeviceSection(
                 Text(
                     text = title,
                     style = CC.titleSmall()
-                )
-                Text(
-                    text = subtitle,
-                    style = CC.subtitleSmall(),
-                    color = CC.secondary()
                 )
             }
 
