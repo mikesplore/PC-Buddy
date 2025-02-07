@@ -8,7 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import com.mike.vendor.deviceControl.AvailableDevicesScreen
 import com.mike.vendor.deviceControl.DocumentationScreen
 import com.mike.vendor.deviceControl.ServerControlScreen
-import com.mike.vendor.specs.BatteryDetailsScreen
+import com.mike.vendor.specs.battery.BatteryDetailsScreen
 import com.mike.vendor.specs.DisplayInfoScreen
 import com.mike.vendor.specs.MemoryAndStorageDetails
 import com.mike.vendor.specs.SystemInfoScreen
