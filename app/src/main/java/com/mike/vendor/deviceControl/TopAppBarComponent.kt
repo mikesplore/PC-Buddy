@@ -69,7 +69,7 @@ fun TopAppBarComponent(
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color(0xffC4E1F6).copy(0.9f),
+            containerColor = CC.primary()
         )
     )
 }
