@@ -1,6 +1,5 @@
 package com.mike.vendor.deviceControl
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateDpAsState
@@ -24,7 +23,6 @@ import androidx.compose.material.icons.rounded.Computer
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -39,10 +37,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.mike.vendor.model.Server
+import java.util.Locale
 import com.mike.vendor.ui.theme.CommonComponents as CC
 
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun DeviceCard(
     device: Server,
@@ -53,7 +51,7 @@ fun DeviceCard(
 
     val statusColor by animateColorAsState(
         targetValue = if (status) Color.Green else Color.Red,
-        animationSpec = tween(500)
+        animationSpec = tween(700)
     )
 
     val pulseAnimation by rememberInfiniteTransition().animateFloat(
@@ -101,7 +99,7 @@ fun DeviceCard(
                     modifier = Modifier
                         .size(40.dp)
                         .background(
-                           CC.primary(),
+                            CC.primary(),
                             CircleShape
                         ),
                     contentAlignment = Alignment.Center
@@ -117,9 +115,18 @@ fun DeviceCard(
                 Column(
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
+                    val name = if (device.name == "kali") {
+                        val macAddress = device.macAddress
+                        "${device.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }} [${macAddress.first()}**${
+                            macAddress.takeLast(
+                                2
+                            )
+                        }]"
+                    } else device.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+
                     Text(
-                        text = device.name,
-                        style = MaterialTheme.typography.titleMedium,
+                        text = name,
+                        style = CC.titleSmall(),
                         fontWeight = FontWeight.Bold,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
