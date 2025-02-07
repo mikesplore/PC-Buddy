@@ -2,8 +2,8 @@ package com.mike.vendor.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val primaryColor = Color(0xffF8FAFC)
-val secondaryColor = Color(0xff3AB0FF)
-val tertiaryColor = Color(0xffDD3E3E)
-val textColor = Color(0xff323643)
-val extraColor = Color(0xffC4E1F6)
+val primaryColor = Color(0xff1A3636)
+val secondaryColor = Color(0xff40534C)
+val tertiaryColor = Color(0xff677D6A)
+val textColor = Color(0xffD6BD98)
+val extraColor = Color(0xff3C3D37)
