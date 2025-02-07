@@ -102,7 +102,7 @@ fun DisplayInfoScreen(
                         }
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = CC.extra())
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = CC.primary())
             )
         }
     ) { padding ->
