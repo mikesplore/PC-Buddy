@@ -125,12 +125,11 @@ fun MemoryAndStorageDetails(
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         style = CC.titleMedium(),
-                        color = CC.primary()
                     )
                 },
                 navigationIcon = {
                     IconButton(onClick = { navController.navigateUp() }) {
-                        Icon(Icons.AutoMirrored.Default.ArrowBackIos, "Back", tint = CC.primary())
+                        Icon(Icons.AutoMirrored.Default.ArrowBackIos, "Back", tint = CC.textColor())
                     }
                 },
                 actions = {
@@ -151,7 +150,7 @@ fun MemoryAndStorageDetails(
 
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = CC.secondary()
+                    containerColor = CC.primary()
                 )
             )
         }
@@ -235,8 +234,8 @@ private fun MemoryCard(memoryDetails: MemoryDetails) {
             MemoryDetailRow("Cache Size", formatBytes(memoryDetails.cacheSize))
 
             if (memoryDetails.swapTotal > 0) {
-                Divider(modifier = Modifier.padding(vertical = 8.dp))
-                Text("Swap Memory", style = MaterialTheme.typography.titleMedium)
+                HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp), color = CC.tertiary())
+                Text("Swap Memory", style = CC.titleSmall())
                 MemoryDetailRow("Total Swap", formatBytes(memoryDetails.swapTotal))
                 MemoryDetailRow("Used Swap", formatBytes(memoryDetails.swapUsed))
             }
@@ -280,7 +279,7 @@ private fun StorageCard(storageInfo: StorageInfo) {
             StorageDetailRow("Used Space", formatBytes(storageInfo.usedSpace))
             StorageDetailRow("Free Space", formatBytes(storageInfo.freeSpace))
 
-            HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+            HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp), color = CC.tertiary())
 
             Text(
                 text = "Mount Points",
