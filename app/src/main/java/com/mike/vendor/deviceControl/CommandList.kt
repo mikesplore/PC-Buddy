@@ -1,6 +1,5 @@
 package com.mike.vendor.deviceControl
 
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,7 +17,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,7 +38,11 @@ fun CommandList(
     modifier: Modifier = Modifier,
     gridColumns: Int = 2
 ) {
-    Text("Control the PC with these commands", style = CC.subtitleMedium(), modifier = Modifier.padding(16.dp, 8.dp))
+    Text(
+        "Control the PC with these commands",
+        style = CC.subtitleMedium(),
+        modifier = Modifier.padding(16.dp, 8.dp)
+    )
     LazyVerticalGrid(
         columns = GridCells.Fixed(gridColumns),
         contentPadding = PaddingValues(16.dp, 8.dp),
@@ -81,7 +83,7 @@ private fun CommandCard(
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.medium),
         colors = CardDefaults.elevatedCardColors(
-            containerColor = Color(0xffC4E1F6)
+            containerColor = CC.secondary()
         ),
         elevation = CardDefaults.elevatedCardElevation(
             defaultElevation = if (isSelected) 8.dp else 4.dp
