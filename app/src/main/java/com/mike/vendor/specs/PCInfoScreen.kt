@@ -1,7 +1,6 @@
 package com.mike.vendor.specs
 
-import android.content.Context
-import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,18 +16,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
 import androidx.compose.material.icons.rounded.BatteryFull
-import androidx.compose.material.icons.rounded.KeyboardArrowRight
 import androidx.compose.material.icons.rounded.Memory
 import androidx.compose.material.icons.rounded.SettingsSystemDaydream
 import androidx.compose.material.icons.rounded.Tv
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -37,9 +32,11 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.mike.vendor.R
 import com.mike.vendor.ui.theme.CommonComponents as CC
 
 @Composable
@@ -57,8 +54,8 @@ fun ViewPCInformation(navController: NavController, macAddress: String) {
         ) {
 
             // Background Image
-            AsyncImage(
-                model = "https://images.unsplash.com/photo-1593640495253-23196b27a87f?auto=format&fit=crop&w=2850&q=80",
+            Image(
+                painter = painterResource(R.drawable.pcinfo),
                 contentDescription = "PC Header Image",
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
@@ -147,7 +144,7 @@ private fun getNavigationItems() = listOf(
     NavigationItem(
         icon = Icons.Rounded.Tv,
         title = "Display",
-        description = "Monitor resolution and specifications",
+        description = "Monitor specifications",
         path = "display"
     ),
     NavigationItem(
@@ -173,10 +170,10 @@ private fun NavigationCard(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = {
-               navController.navigate("$path/$macAddress")
+                navController.navigate("$path/$macAddress")
             }),
         colors = CardDefaults.cardColors(
-            containerColor = CC.extra()
+            containerColor = CC.secondary()
         ),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 2.dp
