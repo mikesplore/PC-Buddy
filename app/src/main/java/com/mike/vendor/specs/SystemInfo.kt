@@ -51,16 +51,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
-import androidx.navigation.NavController
 import com.mike.vendor.api.fetchSystemInfo
 import com.mike.vendor.ui.theme.CommonComponents as CC
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SystemInfoScreen(
-    macAddress: String,
-    navController: NavController,
-    context: Context
+    macAddress: String
 ) {
     val serverViewModel: ServerViewModel = hiltViewModel()
     val systemInfoViewModel: SystemInfoViewModel = hiltViewModel()
@@ -142,7 +139,7 @@ fun SystemInfoScreen(
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = CC.extra()
+                    containerColor = CC.primary()
                 )
             )
         }
@@ -254,7 +251,7 @@ fun SystemInfoScreen(
 private fun DetailSection(
     title: String,
     icon: ImageVector,
-    background: Color = Color(0xff9BB8CD),
+    background: Color = CC.secondary(),
     content: @Composable () -> Unit
 ) {
     Card(
@@ -302,7 +299,6 @@ private fun DetailRow(
             Text(
                 text = label,
                 style = CC.subtitleMedium(),
-                color = Color(0xff316B83)
             )
             Text(
                 text = it,
@@ -367,10 +363,7 @@ private fun CoreFrequenciesChart(frequencies: LongArray) {
                                         modifier = Modifier
                                             .fillMaxWidth()
                                             .weight(1f)
-                                            .background(
-                                                color,
-                                                shape = RoundedCornerShape(2.dp)
-                                            )
+                                            .background(color, shape = RoundedCornerShape(2.dp))
                                     )
                                 }
                             }
