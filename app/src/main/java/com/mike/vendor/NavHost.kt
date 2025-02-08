@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.mike.vendor.deviceControl.AvailableDevicesScreen
 import com.mike.vendor.deviceControl.DocumentationScreen
+import com.mike.vendor.deviceControl.ScheduleScreen
 import com.mike.vendor.deviceControl.ServerControlScreen
 import com.mike.vendor.specs.battery.BatteryDetailsScreen
 import com.mike.vendor.specs.DisplayInfoScreen
@@ -52,7 +53,6 @@ fun AppNavHost(
         composable("display/{macAddress}") { backStackEntry ->
             DisplayInfoScreen(
                 macAddress = backStackEntry.arguments?.getString("macAddress") ?: "",
-                navController = navController,
                 context = context
             )
         }
@@ -67,8 +67,14 @@ fun AppNavHost(
         composable("systemInfo/{macAddress}") { backStackEntry ->
             SystemInfoScreen(
                 macAddress = backStackEntry.arguments?.getString("macAddress") ?: "",
+
+            )
+        }
+
+        composable("schedule/{macAddress}") { backStackEntry ->
+            ScheduleScreen(
+                macAddress = backStackEntry.arguments?.getString("macAddress") ?: "",
                 navController = navController,
-                context = context
             )
         }
 
