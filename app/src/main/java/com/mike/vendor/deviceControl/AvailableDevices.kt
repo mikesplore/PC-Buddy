@@ -132,7 +132,6 @@ fun AvailableDevicesScreen(
                     }
                 }
             }
-
         }
     }
 }
