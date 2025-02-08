@@ -3,48 +3,60 @@ package com.mike.vendor.specs
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBackIos
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.AspectRatio
+import androidx.compose.material.icons.filled.Speed
+import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.rounded.Monitor
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import coil.compose.AsyncImage
-import com.mike.vendor.api.fetchDisplayInfo
-import com.mike.vendor.model.viewmodel.DisplayViewModel
-import com.mike.vendor.model.viewmodel.ServerViewModel
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.filled.AspectRatio
-import androidx.compose.material.icons.filled.Update
-import androidx.compose.material.icons.rounded.HighQuality
-import androidx.compose.material.icons.rounded.Tv
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.mike.vendor.R
+import com.mike.vendor.api.fetchDisplayInfo
+import com.mike.vendor.model.dataClasses.DisplayInfo
+import com.mike.vendor.model.viewmodel.DisplayViewModel
+import com.mike.vendor.model.viewmodel.ServerViewModel
 import com.mike.vendor.ui.theme.CommonComponents as CC
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DisplayInfoScreen(
     macAddress: String,
     context: Context,
-    navController: NavController
 ) {
     var isRefreshing by remember { mutableStateOf(false) }
     val serverViewModel: ServerViewModel = hiltViewModel()
@@ -58,6 +70,7 @@ fun DisplayInfoScreen(
         serverViewModel.getServer(macAddress)
     }
 
+    // Data fetching effects
     LaunchedEffect(server, isRefreshing) {
         server?.let {
             Log.d("fetchDisplayInfo", "Server found: $it")
@@ -84,219 +97,229 @@ fun DisplayInfoScreen(
         refreshData()
     }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(text = "Display Specifications", style = CC.titleMedium()) },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Default.ArrowBackIos, "Back", tint = CC.textColor())
-                    }
-                },
-                actions = {
-                    IconButton(onClick = { refreshData() }, enabled = !isRefreshing) {
-                        if (isRefreshing) {
-                            CircularProgressIndicator(modifier = Modifier.size(24.dp))
-                        } else {
-                            Icon(Icons.Default.Refresh, "Refresh", tint = CC.textColor())
-                        }
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = CC.primary())
-            )
-        }
-    ) { padding ->
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(CC.primary())
-                .padding(padding)
         ) {
-            // Hero Image Section
+            // Header Section
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(180.dp)
+                    .height(200.dp),
+                contentAlignment = Alignment.Center
             ) {
-                AsyncImage(
-                    model = "https://speechi.com/wp-content/uploads/2023/08/interactive-screen-display-interactive-digital-display.jpg",
-                    contentDescription = "Display Image",
+
+                // Background Image
+                Image(
+                    painter = painterResource(R.drawable.display),
+                    contentDescription = "PC Display Image",
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop
                 )
-                // Gradient overlay
+
+                // Gradient Overlay
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
                         .background(
-                            brush = Brush.verticalGradient(
+                            Brush.verticalGradient(
                                 colors = listOf(
                                     Color.Transparent,
                                     CC.primary()
-                                )
+                                ),
+                                startY = 100f
                             )
                         )
                 )
+
+
+                // Title
+                Text(
+                    text = "Display Information",
+                    style = CC.titleLarge(),
+                    color = CC.textColor(),
+                    modifier = Modifier
+                        .align(Alignment.BottomStart)
+                        .padding(16.dp)
+                )
+
             }
 
-            // Display Info Section
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                displayInfo?.forEach { display ->
-                    // Display Name Section
-                    item {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            InfoCard(
-                                modifier = Modifier.weight(1f),
-                                icon = Icons.Rounded.Tv,
-                                title = "Display",
-                                value = display.deviceName,
-                                description = "Primary Display Device"
-                            )
-                        }
-                    }
 
-                    // Resolution Section
-                    item {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            InfoCard(
-                                modifier = Modifier.weight(1f),
-                                icon = Icons.Default.AspectRatio,
-                                title = "Resolution",
-                                value = "${display.width} × ${display.height}",
-                                description = "Screen Resolution",
-                                displayWidth = display.width,
-                                displayHeight = display.height
-                            )
-                        }
-                    }
+            // Display Info Cards
+            displayInfo?.forEach { display ->
+                DisplayMetricsGrid(display, modifier = Modifier.fillMaxWidth(0.9f).align(Alignment.CenterHorizontally))
+                Spacer(modifier = Modifier.height(24.dp))
+                QualityAssessmentCard(display, modifier = Modifier.fillMaxWidth(0.9f).align(Alignment.CenterHorizontally))
+            }
 
-                    // Refresh Rate Section
-                    item {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            InfoCard(
-                                modifier = Modifier.weight(1f),
-                                icon = Icons.Default.Update,
-                                title = "Refresh Rate",
-                                value = "${display.refreshRate} Hz",
-                                description = getRefreshRateDescription(display.refreshRate)
-                            )
-                        }
-                    }
+            // Loading State
+            if (isRefreshing) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
                 }
             }
+        }
+
+}
+
+@Composable
+private fun DisplayMetricsGrid(display: DisplayInfo, modifier: Modifier = Modifier) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+
+        modifier = modifier
+    ) {
+        // Display Name Card
+        item(span = { GridItemSpan(2) }) {
+            MetricCard(
+                icon = Icons.Rounded.Monitor,
+                title = "Display Name",
+                value = display.deviceName,
+                subtitle = "Primary Display Device",
+                tint = MaterialTheme.colorScheme.primary
+            )
+        }
+
+        // Resolution Card
+        item {
+            MetricCard(
+                icon = Icons.Default.AspectRatio,
+                title = "Resolution",
+                value = "${display.width} × ${display.height}",
+                subtitle = getResolutionCategory(display.width, display.height),
+                tint = MaterialTheme.colorScheme.secondary
+            )
+        }
+
+        // Refresh Rate Card
+        item {
+            MetricCard(
+                icon = Icons.Default.Speed,
+                title = "Refresh Rate",
+                value = "${display.refreshRate} Hz",
+                subtitle = getRefreshRateDescription(display.refreshRate),
+                tint = CC.primary()
+            )
         }
     }
 }
 
 @Composable
-fun InfoCard(
-    modifier: Modifier = Modifier,
+private fun MetricCard(
     icon: ImageVector,
     title: String,
     value: String,
-    description: String,
-    displayWidth: Int = 0,
-    displayHeight: Int = 0
+    subtitle: String,
+    tint: Color
 ) {
-    Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(8.dp),
-        colors = CardDefaults.cardColors(containerColor = CC.extra()),
-        shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(8.dp)
+    ElevatedCard(
+        modifier = Modifier.fillMaxWidth(0.8f),
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp),
+        colors = CardDefaults.elevatedCardColors(
+            containerColor = CC.secondary()
+        ),
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(48.dp)
-                        .background( CC.extra(), CircleShape),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = icon,
-                        contentDescription = null,
-                        tint = CC.textColor(),
-                        modifier = Modifier.size(28.dp)
-                    )
-                }
-                Spacer(modifier = Modifier.width(16.dp))
-                Column {
-                    Text(
-                        text = title,
-                        style = CC.titleMedium(),
-                        color = CC.textColor()
-                    )
-                    Text(
-                        text = description,
-                        style = CC.subtitleSmall(),
-                    )
-                }
-
-                if (title == "Resolution") {
-                    Spacer(modifier = Modifier.weight(1f))
-                    Text(
-                        text = getResolutionCategory(displayWidth, displayHeight),
-                        style = CC.subtitleSmall(),
-                        fontWeight = FontWeight.Bold,
-                        color = CC.textColor()
-                    )
-                }
-            }
-            Spacer(modifier = Modifier.height(16.dp))
             Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 4.dp)
+                    .background(
+                        color = CC.tertiary(),
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .padding(8.dp)
             ) {
-                Text(
-                    text = value,
-                    style = CC.titleLarge(),
-                    modifier = Modifier.align(Alignment.CenterStart)
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = tint
                 )
             }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Text(
+                text = title,
+                style = CC.titleMedium()
+            )
+
+            Text(
+                text = value,
+                style = CC.subtitleLarge(),
+                color = Color.White,
+                modifier = Modifier.padding(vertical = 4.dp)
+            )
+
+            Text(
+                text = subtitle,
+                style = CC.subtitleSmall(),
+                color = Color.White
+            )
         }
     }
 }
 
+@Composable
+private fun QualityAssessmentCard(display: DisplayInfo, modifier: Modifier = Modifier) {
+    ElevatedCard(
+        modifier = modifier,
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp),
+        colors = CardDefaults.elevatedCardColors(
+            containerColor = CC.secondary()
+        ),
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = Icons.Rounded.Info,
+                contentDescription = null,
+                tint = CC.primary(),
+                modifier = Modifier.size(32.dp)
+            )
 
+            Column {
+                Text(
+                    text = "Display Quality Assessment",
+                    style = CC.titleMedium(),
+                    modifier = Modifier.padding(bottom = 5.dp)
+                )
 
-private fun getRefreshRateDescription(refreshRate: Int): String {
-    return when {
-        refreshRate >= 144 -> "Excellent for competitive gaming and ultra-smooth motion"
-        refreshRate >= 100 -> "Great for gaming and smooth animations"
-        refreshRate >= 75 -> "Good for casual gaming and general use"
-        refreshRate >= 60 -> "Standard refresh rate for everyday computing"
-        else -> "Basic refresh rate for general use"
-    }
-}
+                Text(
+                    text = buildString {
+                        append("This display offers ")
+                        append(getResolutionCategory(display.width, display.height))
+                        append(" resolution with a ${display.refreshRate}Hz refresh rate, making it ")
+                        append(
+                            when {
+                                display.refreshRate >= 144 -> "excellent for professional use and gaming"
+                                display.refreshRate >= 100 -> "great for content creation and gaming"
+                                else -> "suitable for general use"
+                            }
+                        )
+                        append(".")
+                    },
+                    style = CC.subtitleSmall(),
+                    color = Color.White,
 
-private fun getResolutionDescription(width: Int, height: Int): String {
-    return when {
-        width >= 3840 && height >= 2160 -> "4K Ultra HD - Perfect for content creation and high-end gaming"
-        width >= 2560 && height >= 1440 -> "2K QHD - Great for gaming and professional work"
-        width >= 1920 && height >= 1080 -> "Full HD - Good for most everyday tasks and entertainment"
-        else -> "Standard resolution suitable for basic computing tasks"
+                )
+            }
+        }
     }
 }
 
@@ -309,3 +332,17 @@ private fun getResolutionCategory(width: Int, height: Int): String {
         else -> "Standard"
     }
 }
+
+private fun getRefreshRateDescription(refreshRate: Int): String {
+    return when {
+        refreshRate >= 144 -> "Excellent for competitive gaming"
+        refreshRate >= 100 -> "Great for gaming"
+        refreshRate >= 75 -> "Good for casual gaming"
+        refreshRate >= 60 -> "Standard refresh rate"
+        else -> "Basic refresh rate"
+    }
+}
+
+
+
+
