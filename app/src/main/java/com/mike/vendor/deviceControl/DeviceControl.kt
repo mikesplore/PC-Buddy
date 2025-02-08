@@ -109,12 +109,12 @@ fun ServerControlScreen(
                 onDismissRequest = { selectedCommand = null },
                 title = {
                     Text(if (onlineStatus == false) "Server Offline" else command.confirmationTitle,
-                        style = CC.subtitleSmall())
+                        style = CC.titleMedium())
                 },
                 text = {
                     Text(
                         if (onlineStatus == false)
-                            "${server?.name ?: "The server"} is currently offline. Please check the connection and try again."
+                            "${server?.name?: "The server"} is currently offline. Please check the connection and try again."
                         else
                             command.confirmationMessage,
                         style = CC.subtitleSmall()
@@ -145,7 +145,7 @@ fun ServerControlScreen(
                             containerColor = if (onlineStatus == false) MaterialTheme.colorScheme.error else command.color
                         )
                     ) {
-                        Text(if (onlineStatus == false) "OK" else "Confirm", style = CC.subtitleSmall())
+                        Text(if (onlineStatus == false) "OK" else "Confirm", style = CC.subtitleSmall().copy(color = CC.primary()))
                     }
                 },
                 dismissButton = {
@@ -157,7 +157,7 @@ fun ServerControlScreen(
                         }
                     }
                 },
-                containerColor = CC.extra()
+                containerColor = CC.primary()
             )
         }
     }
