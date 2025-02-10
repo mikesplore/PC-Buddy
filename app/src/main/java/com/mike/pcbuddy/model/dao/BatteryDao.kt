@@ -1,10 +1,10 @@
-package com.mike.vendor.model.dao
+package com.mike.pcbuddy.model.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.mike.vendor.model.dataClasses.BatteryDetails
+import com.mike.pcbuddy.model.dataClasses.BatteryDetails
 import kotlinx.coroutines.flow.Flow
 
 @Dao
