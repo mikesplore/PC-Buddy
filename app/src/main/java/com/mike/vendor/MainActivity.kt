@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             enableEdgeToEdge()
 
-            VendorTheme {
+            VendorTheme(darkTheme = true) {
                 val scope = rememberCoroutineScope()
                 LaunchedEffect(Unit) {
                     fetchServers(serverDao, scope)
