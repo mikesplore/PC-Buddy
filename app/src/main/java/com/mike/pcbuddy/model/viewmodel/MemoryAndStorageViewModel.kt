@@ -1,10 +1,10 @@
-package com.mike.vendor.model.viewmodel
+package com.mike.pcbuddy.model.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mike.vendor.model.dataClasses.MemoryDetails
-import com.mike.vendor.model.dataClasses.StorageInfo
-import com.mike.vendor.model.repositories.MemoryAndStorageRepo
+import com.mike.pcbuddy.model.dataClasses.MemoryDetails
+import com.mike.pcbuddy.model.dataClasses.StorageInfo
+import com.mike.pcbuddy.model.repositories.MemoryAndStorageRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
