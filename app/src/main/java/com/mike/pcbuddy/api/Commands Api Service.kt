@@ -1,16 +1,15 @@
-package com.mike.vendor.api
+package com.mike.pcbuddy.api
 
 
-import com.mike.vendor.model.dao.SystemInfoDao
-import com.mike.vendor.model.dataClasses.BatteryDetails
-import com.mike.vendor.model.dataClasses.ComputerSystemDetails
-import com.mike.vendor.model.dataClasses.DisplayInfo
-import com.mike.vendor.model.dataClasses.MemoryDetails
-import com.mike.vendor.model.dataClasses.OperatingSystemInfo
-import com.mike.vendor.model.dataClasses.ProcessorDetails
-import com.mike.vendor.model.dataClasses.SoftwareInfo
-import com.mike.vendor.model.dataClasses.StorageInfo
-import com.mike.vendor.model.dataClasses.UserEnvironmentInfo
+import com.mike.pcbuddy.model.dataClasses.BatteryDetails
+import com.mike.pcbuddy.model.dataClasses.ComputerSystemDetails
+import com.mike.pcbuddy.model.dataClasses.DisplayInfo
+import com.mike.pcbuddy.model.dataClasses.MemoryDetails
+import com.mike.pcbuddy.model.dataClasses.OperatingSystemInfo
+import com.mike.pcbuddy.model.dataClasses.ProcessorDetails
+import com.mike.pcbuddy.model.dataClasses.SoftwareInfo
+import com.mike.pcbuddy.model.dataClasses.StorageInfo
+import com.mike.pcbuddy.model.dataClasses.UserEnvironmentInfo
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.POST
