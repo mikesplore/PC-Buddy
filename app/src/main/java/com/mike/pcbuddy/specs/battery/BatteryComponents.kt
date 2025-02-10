@@ -1,4 +1,4 @@
-package com.mike.vendor.specs.battery
+package com.mike.pcbuddy.specs.battery
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -29,8 +29,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.mike.vendor.model.dataClasses.BatteryDetails
-import com.mike.vendor.ui.theme.CommonComponents
+import com.mike.pcbuddy.model.dataClasses.BatteryDetails
+import com.mike.pcbuddy.ui.theme.CommonComponents
 import java.util.Locale
 
 @Composable
