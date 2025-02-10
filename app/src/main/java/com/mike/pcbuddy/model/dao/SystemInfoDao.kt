@@ -1,7 +1,7 @@
-package com.mike.vendor.model.dao
+package com.mike.pcbuddy.model.dao
 
 import androidx.room.*
-import com.mike.vendor.model.dataClasses.*
+import com.mike.pcbuddy.model.dataClasses.*
 import kotlinx.coroutines.flow.Flow
 
 @Dao
