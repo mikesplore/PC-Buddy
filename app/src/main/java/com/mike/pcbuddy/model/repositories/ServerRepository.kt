@@ -1,8 +1,8 @@
-package com.mike.vendor.model.repositories
+package com.mike.pcbuddy.model.repositories
 
 import android.util.Log
-import com.mike.vendor.model.Server
-import com.mike.vendor.model.dao.ServerDao
+import com.mike.pcbuddy.model.Server
+import com.mike.pcbuddy.model.dao.ServerDao
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
