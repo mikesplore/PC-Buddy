@@ -1,9 +1,9 @@
-package com.mike.vendor.model
+package com.mike.pcbuddy.model
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.mike.vendor.model.dataClasses.MountPointDetails
+import com.mike.pcbuddy.model.dataClasses.MountPointDetails
 import java.util.Locale
 
 class Converters {
