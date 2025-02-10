@@ -109,7 +109,6 @@ fun ViewPCInformation(navController: NavController, macAddress: String) {
                         "memoryAndStorage" -> "memoryAndStorage"
                         "display" -> "display"
                         "systemInfo" -> "systemInfo"
-                        "schedule" -> "schedule"
                         else -> ""
                     },
                 )
@@ -153,13 +152,8 @@ private fun getNavigationItems() = listOf(
         title = "System Info",
         description = "View system information",
         path = "systemInfo"
-    ),
-    NavigationItem(
-        icon = Icons.Rounded.SettingsSystemDaydream,
-        title = "Schedule",
-        description = "Schedule power management",
-        path = "schedule"
     )
+
 
 
 )
