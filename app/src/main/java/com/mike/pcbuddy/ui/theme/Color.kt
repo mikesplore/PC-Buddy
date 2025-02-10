@@ -1,4 +1,4 @@
-package com.mike.vendor.ui.theme
+package com.mike.pcbuddy.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
