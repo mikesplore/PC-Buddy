@@ -1,9 +1,9 @@
-package com.mike.vendor.model.viewmodel
+package com.mike.pcbuddy.model.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mike.vendor.model.dataClasses.DisplayInfo
-import com.mike.vendor.model.repositories.DisplayRepository
+import com.mike.pcbuddy.model.dataClasses.DisplayInfo
+import com.mike.pcbuddy.model.repositories.DisplayRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
