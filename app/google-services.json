@@ -1,16 +1,16 @@
 {
   "project_info": {
     "project_number": "475857917612",
-    "firebase_url": "https://vendorbymike-default-rtdb.firebaseio.com",
-    "project_id": "vendorbymike",
-    "storage_bucket": "vendorbymike.firebasestorage.app"
+    "firebase_url": "https://pcbuddybymike-default-rtdb.firebaseio.com",
+    "project_id": "pcbuddybymike",
+    "storage_bucket": "pcbuddybymike.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
         "mobilesdk_app_id": "1:475857917612:android:180c5b3822aac58cfa7109",
         "android_client_info": {
-          "package_name": "com.mike.vendor"
+          "package_name": "com.mike.pcbuddy"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "475857917612-hlge5sv2vvpb5nkg8gggii4fkd4o8dv4.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.mike.vendor",
+            "package_name": "com.mike.pcbuddy",
             "certificate_hash": "28334565f0c74775b2f205981d448bcc223c06e8"
           }
         },
