@@ -1,4 +1,4 @@
-package com.mike.vendor.deviceControl
+package com.mike.pcbuddy.deviceControl
 
 import android.content.Context
 import android.util.Log
@@ -30,11 +30,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.mike.vendor.api.Command
-import com.mike.vendor.api.commands
-import com.mike.vendor.api.sendCommand
-import com.mike.vendor.model.viewmodel.ServerViewModel
-import com.mike.vendor.ui.theme.CommonComponents as CC
+import com.mike.pcbuddy.api.Command
+import com.mike.pcbuddy.api.commands
+import com.mike.pcbuddy.api.sendCommand
+import com.mike.pcbuddy.model.viewmodel.ServerViewModel
+import com.mike.pcbuddy.ui.theme.CommonComponents as CC
 
 @Composable
 fun ServerControlScreen(
