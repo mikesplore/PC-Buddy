@@ -1,4 +1,4 @@
-package com.mike.vendor.specs
+package com.mike.pcbuddy.specs
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -35,9 +35,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import coil.compose.AsyncImage
-import com.mike.vendor.R
-import com.mike.vendor.ui.theme.CommonComponents as CC
+import com.mike.pcbuddy.R
+import com.mike.pcbuddy.ui.theme.CommonComponents as CC
 
 @Composable
 fun ViewPCInformation(navController: NavController, macAddress: String) {
