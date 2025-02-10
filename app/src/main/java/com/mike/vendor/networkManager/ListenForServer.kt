@@ -56,6 +56,7 @@ fun discoverServers(
                             name = serverDetails[1],
                             host = packet.address.hostAddress ?: "Unknown",
                             port = serverDetails[8].toIntOrNull() ?: 8080,
+                            deviceType = serverDetails[1]
                         )
 
                         Log.d("ServerDiscovery", "Discovered: $serverInfo")
