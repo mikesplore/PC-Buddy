@@ -1,4 +1,4 @@
-package com.mike.vendor.specs
+package com.mike.pcbuddy.specs
 
 import android.content.Context
 import android.widget.Toast
@@ -18,7 +18,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBackIos
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -44,17 +43,17 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.mike.vendor.api.fetchMemoryInfo
-import com.mike.vendor.api.fetchStorageInfo
-import com.mike.vendor.model.dataClasses.MemoryDetails
-import com.mike.vendor.model.dataClasses.MountPointDetails
-import com.mike.vendor.model.dataClasses.PieChartData
-import com.mike.vendor.model.dataClasses.PieChartWithLegend
-import com.mike.vendor.model.dataClasses.StorageInfo
-import com.mike.vendor.model.viewmodel.MemoryAndStorageViewModel
-import com.mike.vendor.model.viewmodel.ServerViewModel
+import com.mike.pcbuddy.api.fetchMemoryInfo
+import com.mike.pcbuddy.api.fetchStorageInfo
+import com.mike.pcbuddy.model.dataClasses.MemoryDetails
+import com.mike.pcbuddy.model.dataClasses.MountPointDetails
+import com.mike.pcbuddy.model.dataClasses.PieChartData
+import com.mike.pcbuddy.model.dataClasses.PieChartWithLegend
+import com.mike.pcbuddy.model.dataClasses.StorageInfo
+import com.mike.pcbuddy.model.viewmodel.MemoryAndStorageViewModel
+import com.mike.pcbuddy.model.viewmodel.ServerViewModel
 import java.util.Locale
-import com.mike.vendor.ui.theme.CommonComponents as CC
+import com.mike.pcbuddy.ui.theme.CommonComponents as CC
 
 
 @OptIn(ExperimentalMaterial3Api::class)
