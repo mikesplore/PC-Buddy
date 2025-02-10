@@ -65,11 +65,13 @@ private suspend fun updateServerStatusesAndHosts(
             val shouldBeOnline = true
             val hostChanged = dbServer.host != discoveredServer.host
 
-            if (dbServer.onlineStatus != shouldBeOnline || hostChanged) {
+            if (dbServer.onlineStatus != shouldBeOnline || hostChanged ) {
                 val updatedServer = dbServer.copy(
                     name = discoveredServer.name,
                     onlineStatus = shouldBeOnline,
-                    host = discoveredServer.host
+                    host = discoveredServer.host,
+                    port = discoveredServer.port,
+                    deviceType = discoveredServer.deviceType
                 )
                 serverDao.updateServer(updatedServer)
                 Log.d(
