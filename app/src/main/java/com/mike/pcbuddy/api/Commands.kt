@@ -1,31 +1,15 @@
-package com.mike.vendor.api
+package com.mike.pcbuddy.api
 
-import android.content.Context
-import android.widget.Toast
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
-import androidx.compose.material.icons.automirrored.filled.VolumeDown
-import androidx.compose.material.icons.automirrored.filled.VolumeMute
-import androidx.compose.material.icons.automirrored.filled.VolumeUp
-import androidx.compose.material.icons.filled.BatteryFull
-import androidx.compose.material.icons.filled.Bluetooth
-import androidx.compose.material.icons.filled.BluetoothDisabled
-import androidx.compose.material.icons.filled.BrightnessHigh
-import androidx.compose.material.icons.filled.BrightnessLow
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.ModeStandby
 import androidx.compose.material.icons.filled.NightlightRound
 import androidx.compose.material.icons.filled.PowerOff
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Wifi
-import androidx.compose.material.icons.filled.WifiOff
-import androidx.compose.material.icons.filled.WifiTethering
-import androidx.compose.material.icons.filled.WifiTetheringOff
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 data class Command(
     val name: String,
