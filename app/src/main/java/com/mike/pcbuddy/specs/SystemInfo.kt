@@ -1,13 +1,11 @@
-package com.mike.vendor.specs
+package com.mike.pcbuddy.specs
 
-import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -41,8 +39,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.mike.vendor.model.viewmodel.ServerViewModel
-import com.mike.vendor.model.viewmodel.SystemInfoViewModel
+import com.mike.pcbuddy.model.viewmodel.ServerViewModel
+import com.mike.pcbuddy.model.viewmodel.SystemInfoViewModel
 import java.text.DateFormat
 import java.util.Date
 import androidx.compose.runtime.getValue
@@ -51,8 +49,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
-import com.mike.vendor.api.fetchSystemInfo
-import com.mike.vendor.ui.theme.CommonComponents as CC
+import com.mike.pcbuddy.api.fetchSystemInfo
+import com.mike.pcbuddy.ui.theme.CommonComponents as CC
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
