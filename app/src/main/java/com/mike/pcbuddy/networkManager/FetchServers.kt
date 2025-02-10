@@ -1,8 +1,8 @@
-package com.mike.vendor.networkManager
+package com.mike.pcbuddy.networkManager
 
 import android.util.Log
-import com.mike.vendor.model.Server
-import com.mike.vendor.model.dao.ServerDao
+import com.mike.pcbuddy.model.Server
+import com.mike.pcbuddy.model.dao.ServerDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
