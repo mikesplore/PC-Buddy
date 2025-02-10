@@ -1,7 +1,7 @@
-package com.mike.vendor.model.repositories
+package com.mike.pcbuddy.model.repositories
 
-import com.mike.vendor.model.dao.SystemInfoDao
-import com.mike.vendor.model.dataClasses.*
+import com.mike.pcbuddy.model.dao.SystemInfoDao
+import com.mike.pcbuddy.model.dataClasses.*
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
