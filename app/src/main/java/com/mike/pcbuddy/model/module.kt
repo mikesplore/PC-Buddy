@@ -1,14 +1,14 @@
-package com.mike.vendor.model
+package com.mike.pcbuddy.model
 
 import android.content.Context
 import androidx.room.Room
-import com.mike.vendor.model.dao.BatteryDao
-import com.mike.vendor.model.dao.DisplayDao
-import com.mike.vendor.model.dao.MemoryAndStorageDao
-import com.mike.vendor.model.dao.ServerDao
-import com.mike.vendor.model.dao.SystemInfoDao
-import com.mike.vendor.model.repositories.DisplayRepository
-import com.mike.vendor.model.repositories.SystemInfoRepository
+import com.mike.pcbuddy.model.dao.BatteryDao
+import com.mike.pcbuddy.model.dao.DisplayDao
+import com.mike.pcbuddy.model.dao.MemoryAndStorageDao
+import com.mike.pcbuddy.model.dao.ServerDao
+import com.mike.pcbuddy.model.dao.SystemInfoDao
+import com.mike.pcbuddy.model.repositories.DisplayRepository
+import com.mike.pcbuddy.model.repositories.SystemInfoRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,7 +26,7 @@ object AppModule {
         return Room.databaseBuilder(
             context.applicationContext,
             AppDatabase::class.java,
-            "Vendor_Database"
+            "PcBuddy_Database"
         ).build()
     }
 
