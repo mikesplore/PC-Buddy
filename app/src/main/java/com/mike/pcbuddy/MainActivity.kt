@@ -1,15 +1,14 @@
-package com.mike.vendor
+package com.mike.pcbuddy
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
-import com.mike.vendor.networkManager.fetchServers
-import com.mike.vendor.ui.theme.VendorTheme
-import com.mike.vendor.model.dao.ServerDao
+import com.mike.pcbuddy.networkManager.fetchServers
+import com.mike.pcbuddy.ui.theme.PcBuddyTheme
+import com.mike.pcbuddy.model.dao.ServerDao
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -23,7 +22,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             enableEdgeToEdge()
 
-            VendorTheme(darkTheme = true) {
+            PcBuddyTheme(darkTheme = true) {
                 val scope = rememberCoroutineScope()
                 LaunchedEffect(Unit) {
                     fetchServers(serverDao, scope)
