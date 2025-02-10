@@ -14,7 +14,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -48,6 +47,10 @@ fun ServerControlScreen(
     val server by serverViewModel.server.collectAsState()
     val onlineStatus by serverViewModel.serverOnlineStatus.collectAsState()
 
+    fun capitalize(string: String): String {
+        return string.replaceFirstChar { it.uppercase() }
+    }
+
     LaunchedEffect(macAddress) {
         serverViewModel.getServerOnlineStatus(macAddress)
         serverViewModel.getServer(macAddress).also {
@@ -57,7 +60,7 @@ fun ServerControlScreen(
 
     Scaffold(
         topBar = {
-            TopAppBarComponent(server?.name ?: "Unknown Server", onlineStatus == true) {
+            TopAppBarComponent(capitalize(server?.name ?: "Unknown Server"), onlineStatus == true) {
                 navController.popBackStack()
             }
         }
@@ -86,21 +89,9 @@ fun ServerControlScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 8.dp)
             ) {
-                Text("View PC Information", style = CC.subtitleMedium())
+                Text("View ${capitalize(server?.name ?: "Unknown Server")} specs and info", style = CC.subtitleMedium())
             }
             Spacer(modifier = Modifier.height(16.dp))
-            Button(
-                onClick = { navController.navigate("nb") },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = CC.tertiary(),
-                ),
-                shape = RoundedCornerShape(12.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
-            ) {
-                Text("Summary Documentation", style = CC.subtitleMedium())
-            }
         }
 
         // Confirmation Dialog
