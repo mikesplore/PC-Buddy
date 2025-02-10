@@ -1,10 +1,10 @@
-package com.mike.vendor.model.viewmodel
+package com.mike.pcbuddy.model.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mike.vendor.model.Server
-import com.mike.vendor.model.repositories.ServerRepository
+import com.mike.pcbuddy.model.Server
+import com.mike.pcbuddy.model.repositories.ServerRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
