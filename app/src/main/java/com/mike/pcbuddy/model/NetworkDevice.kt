@@ -1,4 +1,4 @@
-package com.mike.vendor.model
+package com.mike.pcbuddy.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
