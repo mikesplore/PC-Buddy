@@ -1,4 +1,4 @@
-package com.mike.vendor.model.dataClasses
+package com.mike.pcbuddy.model.dataClasses
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
