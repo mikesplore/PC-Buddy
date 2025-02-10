@@ -1,17 +1,17 @@
-package com.mike.vendor
+package com.mike.pcbuddy
 
 import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.mike.vendor.deviceControl.AvailableDevicesScreen
-import com.mike.vendor.deviceControl.ServerControlScreen
-import com.mike.vendor.specs.battery.BatteryDetailsScreen
-import com.mike.vendor.specs.DisplayInfoScreen
-import com.mike.vendor.specs.MemoryAndStorageDetails
-import com.mike.vendor.specs.SystemInfoScreen
-import com.mike.vendor.specs.ViewPCInformation
+import com.mike.pcbuddy.deviceControl.AvailableDevicesScreen
+import com.mike.pcbuddy.deviceControl.ServerControlScreen
+import com.mike.pcbuddy.specs.battery.BatteryDetailsScreen
+import com.mike.pcbuddy.specs.DisplayInfoScreen
+import com.mike.pcbuddy.specs.MemoryAndStorageDetails
+import com.mike.pcbuddy.specs.SystemInfoScreen
+import com.mike.pcbuddy.specs.ViewPCInformation
 
 @Composable
 fun AppNavHost(
