@@ -1,10 +1,10 @@
-package com.mike.vendor.model.viewmodel
+package com.mike.pcbuddy.model.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mike.vendor.model.dataClasses.BatteryDetails
-import com.mike.vendor.model.repositories.BatteryRepository
+import com.mike.pcbuddy.model.dataClasses.BatteryDetails
+import com.mike.pcbuddy.model.repositories.BatteryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
