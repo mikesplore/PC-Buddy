@@ -1,4 +1,4 @@
-package com.mike.vendor
+package com.mike.pcbuddy
 
 import org.junit.Test
 
