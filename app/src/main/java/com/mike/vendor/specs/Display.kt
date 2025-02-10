@@ -8,16 +8,21 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AspectRatio
@@ -27,6 +32,7 @@ import androidx.compose.material.icons.rounded.Monitor
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -39,12 +45,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.min
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mike.vendor.R
 import com.mike.vendor.api.fetchDisplayInfo
@@ -63,7 +74,7 @@ fun DisplayInfoScreen(
     val displayViewModel: DisplayViewModel = hiltViewModel()
 
     val server by serverViewModel.server.collectAsState()
-    val displayInfo by displayViewModel.display.collectAsState()
+    val displayInfoList by displayViewModel.display.collectAsState()
 
     fun refreshData() {
         isRefreshing = true
@@ -78,6 +89,7 @@ fun DisplayInfoScreen(
                 ipAddress = it.host,
                 port = it.port,
                 onSuccess = { displayInfoList ->
+                    Toast.makeText(context, "Displays: ${displayInfoList.size}", Toast.LENGTH_SHORT).show()
                     displayInfoList.forEach { displayInfo ->
                         displayViewModel.insertDisplayInfo(displayInfo.copy(macAddress = macAddress))
                     }
@@ -97,116 +109,234 @@ fun DisplayInfoScreen(
         refreshData()
     }
 
-
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(CC.primary())
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(CC.primary())
+    ) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize()
         ) {
             // Header Section
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp),
-                contentAlignment = Alignment.Center
-            ) {
-
-                // Background Image
-                Image(
-                    painter = painterResource(R.drawable.display),
-                    contentDescription = "PC Display Image",
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
-                )
-
-                // Gradient Overlay
+            item {
                 Box(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .background(
-                            Brush.verticalGradient(
-                                colors = listOf(
-                                    Color.Transparent,
-                                    CC.primary()
-                                ),
-                                startY = 100f
-                            )
-                        )
-                )
-
-
-                // Title
-                Text(
-                    text = "Display Information",
-                    style = CC.titleLarge(),
-                    color = CC.textColor(),
-                    modifier = Modifier
-                        .align(Alignment.BottomStart)
-                        .padding(16.dp)
-                )
-
-            }
-
-
-            // Display Info Cards
-            displayInfo?.forEach { display ->
-                DisplayMetricsGrid(display, modifier = Modifier.fillMaxWidth(0.9f).align(Alignment.CenterHorizontally))
-                Spacer(modifier = Modifier.height(24.dp))
-                QualityAssessmentCard(display, modifier = Modifier.fillMaxWidth(0.9f).align(Alignment.CenterHorizontally))
-            }
-
-            // Loading State
-            if (isRefreshing) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
+                        .fillMaxWidth()
+                        .height(200.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    CircularProgressIndicator()
+                    // Background Image
+                    Image(
+                        painter = painterResource(R.drawable.display),
+                        contentDescription = "PC Display Image",
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop
+                    )
+
+                    // Gradient Overlay
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                Brush.verticalGradient(
+                                    colors = listOf(
+                                        Color.Transparent,
+                                        CC.primary()
+                                    ),
+                                    startY = 100f
+                                )
+                            )
+                    )
+
+                    // Title
+                    Text(
+                        text = "Display Information",
+                        style = CC.titleLarge(),
+                        color = CC.textColor(),
+                        modifier = Modifier
+                            .align(Alignment.BottomStart)
+                            .padding(16.dp)
+                    )
+                }
+            }
+
+// Display Info Section
+            displayInfoList?.let { displays ->
+                items(displays) { display ->
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight()
+                            .padding(vertical = 8.dp)
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        ) {
+                            DisplayMetricsGrid(
+                                display = display,
+                                modifier = Modifier
+                                    .fillMaxWidth(0.9f)
+                                    .align(Alignment.CenterHorizontally)
+                            )
+                            Spacer(modifier = Modifier.height(24.dp))
+                            QualityAssessmentCard(
+                                display = display,
+                                modifier = Modifier
+                                    .fillMaxWidth(0.9f)
+                                    .align(Alignment.CenterHorizontally)
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                            HorizontalDivider(
+                                color = CC.textColor().copy(alpha = 0.1f),
+                                modifier = Modifier.padding(horizontal = 32.dp)
+                            )
+                        }
+                    }
                 }
             }
         }
 
+        // Loading State
+        if (isRefreshing) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(CC.primary().copy(alpha = 0.7f)),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+    }
+}
+
+@Composable
+fun DisplayInfoCard(display: DisplayInfo) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+    ) {
+        DisplayMetricsGrid(
+            display = display,
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.CenterHorizontally)
+        )
+        Spacer(modifier = Modifier.height(24.dp))
+        QualityAssessmentCard(
+            display = display,
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.CenterHorizontally)
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        HorizontalDivider(
+            color = CC.textColor().copy(alpha = 0.1f),
+            modifier = Modifier.padding(horizontal = 32.dp)
+        )
+    }
 }
 
 @Composable
 private fun DisplayMetricsGrid(display: DisplayInfo, modifier: Modifier = Modifier) {
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-
+    Column(
         modifier = modifier
+            .fillMaxWidth()
     ) {
         // Display Name Card
-        item(span = { GridItemSpan(2) }) {
-            MetricCard(
-                icon = Icons.Rounded.Monitor,
-                title = "Display Name",
-                value = display.deviceName,
-                subtitle = "Primary Display Device",
-                tint = MaterialTheme.colorScheme.primary
-            )
-        }
+        MetricCard(
+            icon = Icons.Rounded.Monitor,
+            title = "Display Name",
+            value = display.deviceName,
+            subtitle = "Primary Display Device",
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.fillMaxWidth()
+        )
 
-        // Resolution Card
-        item {
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Resolution and Refresh Rate Cards in a Row
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier.fillMaxWidth()
+        ) {
             MetricCard(
                 icon = Icons.Default.AspectRatio,
                 title = "Resolution",
                 value = "${display.width} × ${display.height}",
                 subtitle = getResolutionCategory(display.width, display.height),
-                tint = MaterialTheme.colorScheme.secondary
+                tint = MaterialTheme.colorScheme.secondary,
+                modifier = Modifier.weight(1f)
             )
-        }
 
-        // Refresh Rate Card
-        item {
             MetricCard(
                 icon = Icons.Default.Speed,
                 title = "Refresh Rate",
                 value = "${display.refreshRate} Hz",
                 subtitle = getRefreshRateDescription(display.refreshRate),
-                tint = CC.primary()
+                tint = CC.primary(),
+                modifier = Modifier.weight(1f)
+            )
+        }
+    }
+}
+
+@Composable
+private fun MetricCard(
+    icon: ImageVector,
+    title: String,
+    value: String,
+    subtitle: String,
+    tint: Color,
+    modifier: Modifier = Modifier
+) {
+    ElevatedCard(
+        modifier = modifier,
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp),
+        colors = CardDefaults.elevatedCardColors(
+            containerColor = CC.secondary()
+        ),
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .background(
+                        color = CC.tertiary(),
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .padding(8.dp)
+            ) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = tint
+                )
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Text(
+                text = title,
+                style = CC.titleMedium()
+            )
+
+            Text(
+                text = value,
+                style = CC.subtitleLarge(),
+                color = Color.White,
+                modifier = Modifier.padding(vertical = 4.dp)
+            )
+
+            Text(
+                text = subtitle,
+                style = CC.subtitleSmall(),
+                color = Color.White
             )
         }
     }
@@ -317,7 +447,7 @@ private fun QualityAssessmentCard(display: DisplayInfo, modifier: Modifier = Mod
                     style = CC.subtitleSmall(),
                     color = Color.White,
 
-                )
+                    )
             }
         }
     }
