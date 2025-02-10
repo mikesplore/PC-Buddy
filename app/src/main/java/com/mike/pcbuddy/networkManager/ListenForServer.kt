@@ -1,7 +1,7 @@
-package com.mike.vendor.networkManager
+package com.mike.pcbuddy.networkManager
 
 import android.util.Log
-import com.mike.vendor.model.Server
+import com.mike.pcbuddy.model.Server
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
