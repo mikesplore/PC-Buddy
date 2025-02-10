@@ -1,7 +1,7 @@
-package com.mike.vendor.model.repositories
+package com.mike.pcbuddy.model.repositories
 
-import com.mike.vendor.model.dao.DisplayDao
-import com.mike.vendor.model.dataClasses.DisplayInfo
+import com.mike.pcbuddy.model.dao.DisplayDao
+import com.mike.pcbuddy.model.dataClasses.DisplayInfo
 import javax.inject.Inject
 
 class DisplayRepository @Inject constructor(private val displayDao: DisplayDao){
