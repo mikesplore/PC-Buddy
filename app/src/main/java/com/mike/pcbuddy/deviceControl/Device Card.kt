@@ -1,4 +1,4 @@
-package com.mike.vendor.deviceControl
+package com.mike.pcbuddy.deviceControl
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.RepeatMode
@@ -36,9 +36,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.mike.vendor.model.Server
+import com.mike.pcbuddy.model.Server
 import java.util.Locale
-import com.mike.vendor.ui.theme.CommonComponents as CC
+import com.mike.pcbuddy.ui.theme.CommonComponents as CC
 
 
 @Composable
