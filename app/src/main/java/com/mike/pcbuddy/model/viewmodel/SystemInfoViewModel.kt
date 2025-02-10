@@ -1,14 +1,13 @@
-package com.mike.vendor.model.viewmodel
+package com.mike.pcbuddy.model.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mike.vendor.model.dao.SystemInfoDao
-import com.mike.vendor.model.dataClasses.ComputerSystemDetails
-import com.mike.vendor.model.dataClasses.OperatingSystemInfo
-import com.mike.vendor.model.dataClasses.ProcessorDetails
-import com.mike.vendor.model.dataClasses.SoftwareInfo
-import com.mike.vendor.model.dataClasses.UserEnvironmentInfo
-import com.mike.vendor.model.repositories.SystemInfoRepository
+import com.mike.pcbuddy.model.dataClasses.ComputerSystemDetails
+import com.mike.pcbuddy.model.dataClasses.OperatingSystemInfo
+import com.mike.pcbuddy.model.dataClasses.ProcessorDetails
+import com.mike.pcbuddy.model.dataClasses.SoftwareInfo
+import com.mike.pcbuddy.model.dataClasses.UserEnvironmentInfo
+import com.mike.pcbuddy.model.repositories.SystemInfoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
