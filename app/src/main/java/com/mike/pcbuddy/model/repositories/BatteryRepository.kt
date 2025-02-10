@@ -1,7 +1,7 @@
-package com.mike.vendor.model.repositories
+package com.mike.pcbuddy.model.repositories
 
-import com.mike.vendor.model.dao.BatteryDao
-import com.mike.vendor.model.dataClasses.BatteryDetails
+import com.mike.pcbuddy.model.dao.BatteryDao
+import com.mike.pcbuddy.model.dataClasses.BatteryDetails
 import javax.inject.Inject
 
 class BatteryRepository @Inject constructor(private val batteryDao: BatteryDao) {
