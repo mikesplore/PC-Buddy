@@ -1,11 +1,11 @@
-package com.mike.vendor.model.dao
+package com.mike.pcbuddy.model.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.mike.vendor.model.dataClasses.MemoryDetails
-import com.mike.vendor.model.dataClasses.StorageInfo
+import com.mike.pcbuddy.model.dataClasses.MemoryDetails
+import com.mike.pcbuddy.model.dataClasses.StorageInfo
 
 @Dao
 interface MemoryAndStorageDao {
