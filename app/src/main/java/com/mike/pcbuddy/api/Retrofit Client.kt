@@ -1,5 +1,5 @@
 // RetrofitClient.kt
-package com.mike.vendor.api
+package com.mike.pcbuddy.api
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
