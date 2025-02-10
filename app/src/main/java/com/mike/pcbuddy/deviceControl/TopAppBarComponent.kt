@@ -1,4 +1,4 @@
-package com.mike.vendor.deviceControl
+package com.mike.pcbuddy.deviceControl
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateColorAsState
@@ -7,9 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowBackIos
 import androidx.compose.material.icons.filled.Computer
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -24,7 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.mike.vendor.ui.theme.CommonComponents as CC
+import com.mike.pcbuddy.ui.theme.CommonComponents as CC
 import androidx.compose.runtime.getValue
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
