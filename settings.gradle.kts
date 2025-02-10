@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Vendor"
+rootProject.name = "PcBuddy"
 include(":app")
