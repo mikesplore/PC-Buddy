@@ -1,4 +1,4 @@
-package com.mike.vendor.deviceControl
+package com.mike.pcbuddy.deviceControl
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,16 +20,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import com.mike.vendor.api.Command
-import com.mike.vendor.api.commands
-import com.mike.vendor.ui.theme.CommonComponents as CC
+import com.mike.pcbuddy.api.Command
+import com.mike.pcbuddy.api.commands
+import com.mike.pcbuddy.ui.theme.CommonComponents as CC
 
 @Composable
 fun CommandList(
