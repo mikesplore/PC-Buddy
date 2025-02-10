@@ -1,8 +1,8 @@
-package com.mike.vendor.model.repositories
+package com.mike.pcbuddy.model.repositories
 
-import com.mike.vendor.model.dao.MemoryAndStorageDao
-import com.mike.vendor.model.dataClasses.MemoryDetails
-import com.mike.vendor.model.dataClasses.StorageInfo
+import com.mike.pcbuddy.model.dao.MemoryAndStorageDao
+import com.mike.pcbuddy.model.dataClasses.MemoryDetails
+import com.mike.pcbuddy.model.dataClasses.StorageInfo
 import javax.inject.Inject
 
 class MemoryAndStorageRepo @Inject constructor(
