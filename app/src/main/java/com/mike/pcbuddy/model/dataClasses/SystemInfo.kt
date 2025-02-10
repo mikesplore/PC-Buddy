@@ -1,8 +1,7 @@
-package com.mike.vendor.model.dataClasses
+package com.mike.pcbuddy.model.dataClasses
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.coroutines.flow.Flow
 import java.util.Locale
 
 @Entity(tableName = "processor_details")
