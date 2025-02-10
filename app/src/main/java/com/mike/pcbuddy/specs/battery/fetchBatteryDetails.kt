@@ -1,4 +1,4 @@
-package com.mike.vendor.specs.battery
+package com.mike.pcbuddy.specs.battery
 
 import android.content.Context
 import android.util.Log
@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -44,11 +43,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.mike.vendor.api.fetchBatteryInfo
-import com.mike.vendor.model.dataClasses.BatteryDetails
-import com.mike.vendor.model.viewmodel.BatteryViewModel
-import com.mike.vendor.model.viewmodel.ServerViewModel
-import com.mike.vendor.ui.theme.CommonComponents as CC
+import com.mike.pcbuddy.api.fetchBatteryInfo
+import com.mike.pcbuddy.model.dataClasses.BatteryDetails
+import com.mike.pcbuddy.model.viewmodel.BatteryViewModel
+import com.mike.pcbuddy.model.viewmodel.ServerViewModel
+import com.mike.pcbuddy.ui.theme.CommonComponents as CC
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
