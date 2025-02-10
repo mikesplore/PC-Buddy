@@ -9,22 +9,22 @@ plugins {
 }
 
 android {
-    namespace = "com.mike.vendor"
+    namespace = "com.mike.pcbuddy"
     compileSdk = 35
 
     signingConfigs {
         if (!signingConfigs.names.contains("debug")) {
             create("debug") {
-                storeFile = file("C:\\Users\\Mike\\Documents\\vendor.jks")
+                storeFile = file("C:\\Users\\Mike\\Documents\\pcbuddy.jks")
                 storePassword = "mikemike"
-                keyAlias = "vendor"
+                keyAlias = "pcbuddy"
                 keyPassword = "mikemike"
             }
         }
     }
 
     defaultConfig {
-        applicationId = "com.mike.vendor"
+        applicationId = "com.mike.pcbuddy"
         minSdk = 26
         targetSdk = 35
         versionCode = 1
