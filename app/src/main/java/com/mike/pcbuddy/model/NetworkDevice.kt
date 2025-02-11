@@ -10,7 +10,9 @@ data class Server(
     val host: String,
     val port: Int,
     val deviceType: String,
+    val operatingSystem: String = "",
+    val username: String = "",
     var onlineStatus: Boolean = true,
-){
-    constructor(): this("", "", "", 0, "")
+) {
+    constructor() : this("", "", "", 0, "")
 }
