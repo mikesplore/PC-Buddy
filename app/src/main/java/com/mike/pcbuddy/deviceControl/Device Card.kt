@@ -32,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -115,14 +116,7 @@ fun DeviceCard(
                 Column(
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    val name = if (device.name == "kali") {
-                        val macAddress = device.macAddress
-                        "${device.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }} [${macAddress.first()}**${
-                            macAddress.takeLast(
-                                2
-                            )
-                        }]"
-                    } else device.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+                    val name = CC.capitalize(device.name)
 
                     Text(
                         text = name,
@@ -131,6 +125,12 @@ fun DeviceCard(
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
+                    Text(
+                        text = device.username,
+                        style = CC.subtitleSmall(),
+                        fontWeight = FontWeight.ExtraLight,
+                    )
+
                 }
             }
 
