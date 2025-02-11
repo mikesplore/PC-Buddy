@@ -47,9 +47,7 @@ fun ServerControlScreen(
     val server by serverViewModel.server.collectAsState()
     val onlineStatus by serverViewModel.serverOnlineStatus.collectAsState()
 
-    fun capitalize(string: String): String {
-        return string.replaceFirstChar { it.uppercase() }
-    }
+
 
     LaunchedEffect(macAddress) {
         serverViewModel.getServerOnlineStatus(macAddress)
@@ -60,7 +58,7 @@ fun ServerControlScreen(
 
     Scaffold(
         topBar = {
-            TopAppBarComponent(capitalize(server?.name ?: "Unknown Server"), onlineStatus == true) {
+            TopAppBarComponent(CC.capitalize(server?.name ?: "Unknown Server"), onlineStatus == true) {
                 navController.popBackStack()
             }
         }
@@ -89,7 +87,7 @@ fun ServerControlScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 8.dp)
             ) {
-                Text("View ${capitalize(server?.name ?: "Unknown Server")} specs and info", style = CC.subtitleMedium())
+                Text("View ${CC.capitalize(server?.name ?: "Unknown Server")} specs and info", style = CC.subtitleMedium())
             }
             Spacer(modifier = Modifier.height(16.dp))
         }
@@ -153,7 +151,6 @@ fun ServerControlScreen(
         }
     }
 }
-
 
 
 
