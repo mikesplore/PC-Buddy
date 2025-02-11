@@ -143,7 +143,7 @@ fun MemoryAndStorageDetails(
                                 strokeWidth = 1.dp
                             )
                         } else {
-                            Icon(Icons.Default.Refresh, "Refresh", tint = CC.primary())
+                            Icon(Icons.Default.Refresh, "Refresh", tint = CC.textColor())
                         }
                     }
 
