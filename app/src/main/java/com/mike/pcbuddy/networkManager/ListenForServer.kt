@@ -49,18 +49,19 @@ fun discoverServers(
                 // Check if the message starts with "SERVER_DISCOVERY:"
                 if (message.startsWith("SERVER_DISCOVERY:")) {
                     val serverDetails = message.split(":")
-                    if (serverDetails.size >= 5) {
-                        // Parse server details from the message
+                    if (serverDetails.size >= 7) {
                         val serverInfo = Server(
                             macAddress = serverDetails.slice(2..7).joinToString(":"),
                             name = serverDetails[1],
                             host = packet.address.hostAddress ?: "Unknown",
                             port = serverDetails[8].toIntOrNull() ?: 8080,
-                            deviceType = serverDetails[1]
+                            deviceType = serverDetails[1],
+                            operatingSystem = serverDetails[9],
+                            username = serverDetails[10]
                         )
 
                         Log.d("ServerDiscovery", "Discovered: $serverInfo")
-                        emit(serverInfo) // Emit the discovered server
+                        emit(serverInfo)
                     }
                 }
             } catch (e: SocketTimeoutException) {
