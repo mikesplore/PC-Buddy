@@ -71,7 +71,8 @@ private suspend fun updateServerStatusesAndHosts(
                     onlineStatus = shouldBeOnline,
                     host = discoveredServer.host,
                     port = discoveredServer.port,
-                    deviceType = discoveredServer.deviceType
+                    deviceType = discoveredServer.deviceType,
+                    username = discoveredServer.username
                 )
                 serverDao.updateServer(updatedServer)
                 Log.d(
