@@ -97,5 +97,10 @@ object CommonComponents {
         return MaterialTheme.colorScheme.onSecondary
     }
 
+    fun capitalize(string: String): String {
+        return string.replaceFirstChar { it.uppercase() }
+    }
+
+
 
 }
